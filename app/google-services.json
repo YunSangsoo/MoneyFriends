@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "599011783203",
+    "project_id": "moneyfriend",
+    "storage_bucket": "moneyfriend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599011783203:android:a27c6b711aaf94350e3796",
+        "android_client_info": {
+          "package_name": "com.example.moneyfriend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599011783203-i8vdr61tlc4mgnnktfrut747n372ak96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXCvdKvIHtXjBpE6XfhI2pd3KYH2pWUIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599011783203-i8vdr61tlc4mgnnktfrut747n372ak96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
