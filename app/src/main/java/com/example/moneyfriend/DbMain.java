@@ -13,6 +13,8 @@ public class DbMain {
 
     void TestDB() {
 
+        final String TAG = "here";
+
         mAuth = FirebaseAuth.getInstance();
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -25,7 +27,16 @@ public class DbMain {
         user.put("Field2","Phone Number");
         user.put("Number",119);
 
+        Map<String, Object> test = new HashMap<>();
+
+        test.put("test1","YOO1");
+        test.put("test2","YOO2");
+        test.put("test3","YOO3");
+
+
         db.document("/UserData/Temp").set(user);
+
+        db.document("/UserData/YOO_Test").set(test);
 
     }
 }
