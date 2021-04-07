@@ -36,7 +36,7 @@ public class DbMain {
 
         db.document("/UserData/Temp").set(user);
 
-        db.document("/UserData/YOO_Test").set(test);
+        db.document("/UserData/YOO_Test_/Uid/"+mAuth.getUid()).set(test);
 
     }
 }
