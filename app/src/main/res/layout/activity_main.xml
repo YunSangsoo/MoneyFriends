@@ -13,7 +13,7 @@
         <Button
             android:id="@+id/buttonOneD"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:text="Button_D"
             >
 
@@ -22,11 +22,22 @@
         <Button
             android:id="@+id/buttonOneW"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:text="Button_W"
             >
 
         </Button>
+
+        <Button
+            android:id="@+id/buttonOneS"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Button_S"
+            >
+
+        </Button>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

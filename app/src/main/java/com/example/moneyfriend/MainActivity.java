@@ -36,19 +36,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button buttonS = (Button) findViewById(R.id.buttonOneS);
+        buttonS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Student student =
+                        new Student("유현석", 01, 5, "숭실초등학교","은행원",1000000, 752, "studentKey", "accountKey");
+                db.signUp(student);
 
+                db.removeJobInList("addTest");
+            }
+        });
 
-
-
-
-
-
-
-
-        //db.deposit(1000, "Bank");
-
-
-       // db.withdraw(100, "Bank");
 
 
     }

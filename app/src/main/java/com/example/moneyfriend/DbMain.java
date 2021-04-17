@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class DbMain {
 
-    //Using on Test DB
+
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
      final FirebaseFirestore db=FirebaseFirestore.getInstance();
 
@@ -102,6 +102,54 @@ public class DbMain {
         db.collection("Info/Account/"+savingsOrBank+"Account/"+mAuth.getUid()+"/AccountDetails")
                 .document("Log_"+log.getDateOfTransaction()+"_"+log.getTimeOfTransaction()).set(log);
     }
+
+    void signUp (Student student) // 회원가입 함수
+    {
+        DocumentReference documentReference
+        =db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+"_"+student.getName());
+
+        documentReference.set(student);
+    }
+
+    void calculateCreditScore () // 신용점수 계산 함수
+    {
+
+    }
+
+    void paySalary () /// 급여 지급 함수
+    {
+
+
+    }
+
+    void getJobList() /// 직업 가져오기 함수
+    {
+        DocumentReference documentReference=db.collection("Info").document("Job");
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                    {
+                        task.getResult().get("jobList");
+                    }
+                });
+    }
+
+    void addJobToList (String jobName) /// 직업 추가 함수
+    {
+        DocumentReference documentReference=db.collection("Info").document("Job");
+        documentReference.update("jobList",FieldValue.arrayUnion(jobName));
+    }
+
+    void removeJobInList (String jobName) /// 직업 삭제 함수
+    {
+        DocumentReference documentReference=db.collection("Info").document("Job");
+        documentReference.update("jobList",FieldValue.arrayRemove(jobName));
+    }
+
+
+
+
 
 
 
