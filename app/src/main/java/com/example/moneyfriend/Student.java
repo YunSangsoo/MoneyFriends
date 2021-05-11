@@ -12,6 +12,8 @@ public class Student
     private String studentKey; //학생 key값_must be locked
     private String accountKey; // 계좌 key값_must be locked
 
+    private String uid;//UID
+
     public Student(String name, int attendanceNumber, int classNumber, String school, String job, int salary, int creditScore, String studentKey, String accountKey)
     {
         this.name = name;
@@ -23,6 +25,9 @@ public class Student
         this.creditScore = creditScore;
         this.studentKey = studentKey;
         this.accountKey = accountKey;
+
+        //uid
+        this.uid = null;
     }
 
     public String getName() {
@@ -51,5 +56,14 @@ public class Student
 
     public String getAccountKey() {
         return accountKey;
+    }
+
+    public String getUid() { return uid;}
+
+
+    //예시
+    public int putuid(String puid){
+        uid = puid;
+        return 1;
     }
 }
