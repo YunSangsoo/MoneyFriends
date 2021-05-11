@@ -19,12 +19,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.protobuf.StringValue;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 public class DbMain {
 
@@ -42,10 +45,6 @@ public class DbMain {
          else
              db.collection("Info/Account/BankAccount").document(mAuth.getUid()).set(account);
      }
-
-
-
-
 
      void deposit(int amount, String savingsOrBank) // 입금 함수
     {
@@ -68,10 +67,6 @@ public class DbMain {
         });
     }
 
-
-
-
-
     int withdraw(int amount, String savingsOrBank) // 출금 함수
     {
         DocumentReference accountRef;
@@ -93,10 +88,6 @@ public class DbMain {
         return amount;
     }
 
-
-
-
-
     void addAccountLog(AccountLog log, String savingsOrBank) // 계좌에 거래내역(Log)을 추가하는 함수
     {
         db.collection("Info/Account/"+savingsOrBank+"Account/"+mAuth.getUid()+"/AccountDetails")
@@ -105,8 +96,9 @@ public class DbMain {
 
     void signUp (Student student) // 회원가입 함수
     {
-        DocumentReference documentReference
-        =db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+"_"+student.getName());
+        student.putuid(mAuth.getUid());
+
+        DocumentReference documentReference = db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName());
 
         documentReference.set(student);
     }
@@ -146,14 +138,5 @@ public class DbMain {
         DocumentReference documentReference=db.collection("Info").document("Job");
         documentReference.update("jobList",FieldValue.arrayRemove(jobName));
     }
-
-
-
-
-
-
-
-
-
 
 }

@@ -40,11 +40,16 @@ public class MainActivity extends AppCompatActivity {
         buttonS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Student student =
+               /* Student student =
                         new Student("유현석", 01, 5, "숭실초등학교","은행원",1000000, 752, "studentKey", "accountKey");
+                db.signUp(student);*/
+
+                Student student = new Student("윤상수", 02, 5, "숭실초등학교","경찰",1000000, 500, "studentKey", "accountKey");
                 db.signUp(student);
 
-                db.removeJobInList("addTest");
+
+
+                //db.removeJobInList("addTest");
             }
         });
 
