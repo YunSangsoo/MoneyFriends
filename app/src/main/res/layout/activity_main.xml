@@ -14,7 +14,7 @@
             android:id="@+id/buttonOneD"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Button_D"
+            android:text="Button_Deposit"
             >
 
         </Button>
@@ -23,7 +23,7 @@
             android:id="@+id/buttonOneW"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Button_W"
+            android:text="Button_Withdraw"
             >
 
         </Button>
@@ -32,7 +32,56 @@
             android:id="@+id/buttonOneS"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Button_S"
+            android:text="Button_Student"
+            >
+
+        </Button>
+
+        <Button
+            android:id="@+id/buttonOneJ"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Button_Job"
+            >
+
+        </Button>
+
+        <EditText
+            android:id="@+id/edit_"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="none"
+            android:singleLine="false"
+            android:scrollHorizontally="false"
+            android:hint="Please enter a text"
+            >
+
+        </EditText>
+
+        <Button
+            android:id="@+id/buttonOneE"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="saveNotice_getNotice"
+            >
+
+        </Button>
+
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textStyle="bold"
+            android:text="Result!"
+            >
+
+        </TextView>
+
+        <Button
+            android:id="@+id/buttonOneR"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="saveRule_getRule"
             >
 
         </Button>
