@@ -34,21 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        db.openAccount("YOO","key_1",false);
+        db.openAccount(1,"YOOHYEONSEOK",false);
 
         Button buttonD = (Button) findViewById(R.id.buttonOneD);
         buttonD.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                db.deposit(10000, "Bank");
-            }
+            public void onClick(View v) { db.deposit(1, "YOOHYEONSEOK",1000,"Bank"); }
         });
 
         Button buttonW = (Button) findViewById(R.id.buttonOneW);
         buttonW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.withdraw(5000, "Bank");
+                db.withdraw(1, "YOOHYEONSEOK",500,"Bank");
             }
         });
 
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Student student =
-                        new Student("유현석", 01, 5, "숭실초등학교","은행원",1000000, 752, "studentKey", "accountKey");
+                        new Student("YOOHYEONSEOK", 1, 5, "숭실초등학교");
                 db.signUp(student);
 
 
@@ -109,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
                // Toast.makeText(getApplicationContext(),map_.get("Rule1"),Toast.LENGTH_SHORT).show();
 
+                db.setJob(1,"YOOHYEONSEOK","경찰");
+                //db.paySalary(1,"YOOHYEONSEOK");
 
 
             }

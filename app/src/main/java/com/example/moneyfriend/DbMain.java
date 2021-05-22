@@ -42,22 +42,21 @@ public class DbMain {
 
 
 
-     void openAccount(String ownerOfAccount, String key ,boolean savingsOrNot) //계좌 개설 함수
+     void openAccount(int attendanceNumber, String ownerOfAccount, boolean savingsOrNot) //계좌 개설 함수
      {
-         mAuth.signInAnonymously();
 
-         Account account = new Account(ownerOfAccount, key,"Account Number");
+         Account account = new Account(ownerOfAccount);
          if (savingsOrNot == true)
-             db.collection("Info/Account/SavingsAccount").document(mAuth.getUid()).set(account);
+             db.collection("Info/Account/SavingsAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
          else
-             db.collection("Info/Account/BankAccount").document(mAuth.getUid()).set(account);
+             db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
      }
 
-     void deposit(int amount, String savingsOrBank) // 입금 함수
+     void deposit(int attendanceNumber, String ownerOfAccount, int amount, String savingsOrBank) // 입금 함수
     {
         final DocumentReference accountRef;
 
-        accountRef = db.collection("Info/Account/"+savingsOrBank+"Account").document(mAuth.getUid());
+        accountRef = db.collection("Info/Account/"+savingsOrBank+"Account").document("Account_"+attendanceNumber+ownerOfAccount);
 
         accountRef.update("balance", FieldValue.increment(amount));
 
@@ -70,16 +69,16 @@ public class DbMain {
             {
                DocumentSnapshot documentSnapshot= task.getResult();
                 AccountLog log = new AccountLog(true,amount,Integer.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
-                addAccountLog(log,savingsOrBank);
+                addAccountLog(accountRef,log,savingsOrBank);
             }
         });
     }
 
-    int withdraw(int amount, String savingsOrBank) // 출금 함수
+    int withdraw(int attendanceNumber, String ownerOfAccount, int amount, String savingsOrBank) // 출금 함수
     {
         DocumentReference accountRef;
 
-        accountRef = db.collection("Info/Account/"+savingsOrBank+"Account").document(mAuth.getUid());
+        accountRef = db.collection("Info/Account/"+savingsOrBank+"Account").document("Account_"+attendanceNumber+ownerOfAccount);
 
         accountRef.update("balance", FieldValue.increment(-amount));
 
@@ -90,16 +89,16 @@ public class DbMain {
             {
                 DocumentSnapshot documentSnapshot= task.getResult();
                 AccountLog log = new AccountLog(false,amount,Integer.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
-                addAccountLog(log,savingsOrBank);
+                addAccountLog(accountRef,log,savingsOrBank);
             }
         });
 
         return amount;
     }
 
-    void addAccountLog(AccountLog log, String savingsOrBank) // 계좌에 거래내역(Log)을 추가하는 함수
+    void addAccountLog(DocumentReference accountRef, AccountLog log, String savingsOrBank) // 계좌에 거래내역(Log)을 추가하는 함수
     {
-        db.collection("Info/Account/"+savingsOrBank+"Account/"+mAuth.getUid()+"/AccountDetails").document("Log_"+log.getDateOfTransaction()+"_"+log.getTimeOfTransaction()).set(log);
+        accountRef.collection("AccountDetails").document("Log_"+log.getDateOfTransaction()+"_"+log.getTimeOfTransaction()).set(log);
     }
 
 
@@ -118,8 +117,36 @@ public class DbMain {
 
     }
 
-    void paySalary () /// 급여 지급 함수
+    void setJob(int attendanceNumber, String studentName, String job) // 직업 설정 함수
     {
+        DocumentReference documentStudent = db.collection("User/Student/StudentList").document("Student_"+attendanceNumber+studentName);
+        documentStudent.update("Job", job);
+    }
+
+    void paySalary (int attendanceNumber, String studentName) // 급여 지급 함수
+    {
+        DocumentReference documentStudent = db.collection("User/Student/StudentList").document("Student_"+attendanceNumber+studentName);
+        documentStudent.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task)
+            {
+                DocumentSnapshot documentSnapshot= task.getResult();
+                DocumentReference documentJob =db.collection("Info/Job/JobList").document(documentSnapshot.get("job").toString());
+
+                documentJob.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                    {
+                        DocumentSnapshot documentSnapshot= task.getResult();
+
+                        deposit(attendanceNumber,studentName,Integer.valueOf(documentSnapshot.get("salary").toString()),"Bank");
+                    }
+                });
+
+            }
+        });
 
 
     }
