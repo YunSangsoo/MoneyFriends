@@ -23,9 +23,12 @@ public class Student
         this.attendanceNumber = attendanceNumber;
         this.classNumber = classNumber;
         this.school = school;
+      
         this.job = DEFAULT_JOB;
         this.salary = DEFAULT_SALARY; // 추후 프론트 단에서 설계예정.
         this.creditScore = DEFAULT_CREDIT_SCORE;
+      
+        //uid
         this.uid = null;
     }
 
@@ -54,5 +57,14 @@ public class Student
     public int putuid(String puid){
         uid = puid;
         return  1;
+    }
+
+    public String getUid() { return uid;}
+
+
+    //예시
+    public int putuid(String puid){
+        uid = puid;
+        return 1;
     }
 }

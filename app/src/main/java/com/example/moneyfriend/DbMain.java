@@ -52,6 +52,7 @@ public class DbMain {
              db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
      }
 
+  
      void deposit(int attendanceNumber, String ownerOfAccount, int amount, String savingsOrBank) // 입금 함수
     {
         final DocumentReference accountRef;
@@ -73,6 +74,7 @@ public class DbMain {
             }
         });
     }
+
 
     int withdraw(int attendanceNumber, String ownerOfAccount, int amount, String savingsOrBank) // 출금 함수
     {
@@ -113,9 +115,6 @@ public class DbMain {
     }
 
     void calculateCreditScore () // 신용점수 계산 함수
-    {
-
-    }
 
     void setJob(int attendanceNumber, String studentName, String job) // 직업 설정 함수
     {
@@ -235,16 +234,5 @@ public class DbMain {
                 });
         return rule;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }
