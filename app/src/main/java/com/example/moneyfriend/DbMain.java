@@ -1,10 +1,13 @@
 package com.example.moneyfriend;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.moneyfriend.Form.Form;
+import com.example.moneyfriend.Form.JobApplicationForm;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +38,7 @@ import static android.content.ContentValues.TAG;
 public class DbMain {
 
     private String notice; //나중에 다음과 같은 String변수가 쓰이면 통합???
-    private Map<String,String> rule= new HashMap<>();
+
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
      final FirebaseFirestore db=FirebaseFirestore.getInstance();
@@ -117,10 +120,60 @@ public class DbMain {
 
     }
 
-    void setJob(int attendanceNumber, String studentName, String job) // 직업 설정 함수
+    void applyForJob (JobApplicationForm form) // 직업 신청함수 _학생용
+    {
+        db.collection("Info/Form/FormList_JobApplication").document(form.getStudentName()+"_"+form.getAttendanceNumber()).set(form);
+    }
+
+    List<Form> getJobApplicationForms () // 직업 신청함수 _선생님용
+    {
+        List<Form> list = new ArrayList<>();
+        db.collection("Info/Form/FormList_JobApplication")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+
+
+
+                                Form form = new JobApplicationForm
+                                        (       document.get("studentName").toString(),
+                                                Integer.valueOf(document.get("attendanceNumber").toString()),
+                                                document.get("title").toString(),
+                                                document.get("contents").toString(),
+                                                document.get("jobName").toString(),
+                                                document.get("contentsOfCertificate").toString() );
+
+                                Log.d("here",form.toString());
+                                list.add(form);
+                            }
+
+                        }
+                        else
+                        {
+                            Log.d("here!!!", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+        return list;
+
+    }
+
+
+
+    void setJob(int attendanceNumber, String studentName, String jobName) // 직업 설정 함수
     {
         DocumentReference documentStudent = db.collection("User/Student/StudentList").document("Student_"+attendanceNumber+studentName);
-        documentStudent.update("Job", job);
+        documentStudent.update("Job", jobName);
     }
 
     void paySalary (int attendanceNumber, String studentName) // 급여 지급 함수
@@ -151,49 +204,56 @@ public class DbMain {
 
     }
 
-    List<String> getJobList() /// 직업 List 가져오기 함수
-    {
-        //db.collection("Info/Job/JobList").get();
 
-        List<String> list = new ArrayList<>();
-
-        db.collection("Info/Job/JobList")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
-                if (task.isSuccessful())
-                {
-
-                    for (QueryDocumentSnapshot document : task.getResult())
-                    {
-                        list.add(document.getId());
-                    }
-
-                }
-                else
-                    {
-                    Log.d("here!!!", "Error getting documents: ", task.getException());
-                }
-            }
-        });
-
-        return list;
-    }
 
     void addJob (Job job) /// 직업 추가 함수
     {
         db.collection("Info/Job/JobList").document(job.getName()).set(job);
     }
 
-    void removeJob (String jobName) /// 직업 삭제 함수
+    void editJob (Job job) /// 직업 수정 함수
+    {
+        deleteJob(job.getName());
+        addJob(job);
+    }
+
+    void deleteJob (String jobName) /// 직업 삭제 함수
     {
         db.collection("Info/Job/JobList").document(jobName).delete();
     }
 
-    void saveNotice (String title, String content) /// 공지사항 추가 함수
+    List<String> getJobList(int minimumCreditScore) /// 직업 List 가져오기 함수
+    {
+        List<String> list = new ArrayList<>();
+
+        db.collection("Info/Job/JobList")
+                .whereGreaterThan("minimumCreditScore",minimumCreditScore)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                list.add(document.getId());
+                            }
+
+                        }
+                        else
+                        {
+                            Log.d("here!!!", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        return list;
+    }
+
+    void addNotice (String title, String content) /// 공지사항 추가 함수
     {
         Notice notice = new Notice(title,content, LocalDate.now(),LocalTime.now());
         db.collection("Info/Notice/NoticeList").document(title).set(notice);
@@ -201,6 +261,7 @@ public class DbMain {
 
     String getNotice (String title) /// 공지사항 가져오기 함수
     {
+
         db.collection("Info/Notice/NoticeList").document(title).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
                 {
@@ -215,25 +276,51 @@ public class DbMain {
         return notice;
     }
 
-    void saveRule (Map<String,String> map) /// 규칙 추가 함수
+    void addRule (Rule rule) // 규칙 추가 함수
     {
-        db.collection("Info").document("Rule");
+        db.collection("Info/Rule/RuleList").document(rule.getChapter()+"_"+rule.getArticle()+"_"+rule.getParagraph()).set(rule);
     }
 
-    Map<String, String> getRule (String title) /// 규칙 가져오기 함수
+    void editRule (Rule rule) // 규칙 수정 함수
     {
-        db.collection("Info").document("Rule").get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
+        deleteJob(rule.getChapter()+"_"+rule.getArticle()+"_"+rule.getParagraph());
+        addRule(rule);
+    }
+
+    void deleteRule(String RuleName) // 규칙 제거 함수
+    {
+        db.collection("Info/Rule/RuleList").document(RuleName).delete();
+    }
+
+    List<String> getRuleList () // 규칙 가져오기 함수
+    {
+        List<String> list = new ArrayList<>();
+
+        db.collection("Info/Rule/RuleList")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
                 {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
                     {
-                        DocumentSnapshot documentSnapshot= task.getResult();
-                        rule.put(title,documentSnapshot.get(title).toString());
+                        if (task.isSuccessful())
+                        {
 
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                list.add(document.getId());
+                            }
+
+                        }
+                        else
+                        {
+                            Log.d("here!!!", "Error getting documents: ", task.getException());
+                        }
                     }
                 });
-        return rule;
+
+        return list;
+
     }
 
 

@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moneyfriend.Form.Form;
+import com.example.moneyfriend.Form.JobApplicationForm;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -27,31 +30,42 @@ public class MainActivity extends AppCompatActivity {
 
         DbMain db = new DbMain();
 
-        List<String> list=db.getJobList();
+        List<String> list=db.getJobList(350);
+        List<String> listRule = db.getRuleList();
+        List<Form> formList = db.getJobApplicationForms();
 
-         editText = (EditText) findViewById(R.id.edit_);
+        JobApplicationForm form = new JobApplicationForm("KWON", 24, "공란", "신청이유", "세무사", "수학1등급" );
+        db.applyForJob(form);
+
+
+        editText = (EditText) findViewById(R.id.edit_);
          textView = (TextView) findViewById(R.id.textview);
 
 
 
-        db.openAccount(1,"YOOHYEONSEOK",false);
-
+        //db.openAccount(1,"YOOHYEONSEOK",false);
+        /*
         Button buttonD = (Button) findViewById(R.id.buttonOneD);
-        buttonD.setOnClickListener(new View.OnClickListener() {
+        buttonD.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) { db.deposit(1, "YOOHYEONSEOK",1000,"Bank"); }
         });
 
         Button buttonW = (Button) findViewById(R.id.buttonOneW);
-        buttonW.setOnClickListener(new View.OnClickListener() {
+        buttonW.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 db.withdraw(1, "YOOHYEONSEOK",500,"Bank");
             }
         });
 
+         */
+
         Button buttonS = (Button) findViewById(R.id.buttonOneS);
-        buttonS.setOnClickListener(new View.OnClickListener() {
+        buttonS.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Student student =
@@ -63,15 +77,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button buttonJ = (Button) findViewById(R.id.buttonOneJ);
-        buttonJ.setOnClickListener(new View.OnClickListener() {
+        buttonJ.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
 
-                Job job1 = new Job("테스트직업3", 3000, 750);
-                Job job2 = new Job("테스트직업4", 3000, 750);
 
-                db.addJob(job1);
-                db.addJob(job2);
+
+
 
                 Toast.makeText(getApplicationContext(),list.toString(),Toast.LENGTH_SHORT).show();
 
@@ -82,10 +95,11 @@ public class MainActivity extends AppCompatActivity {
         Button buttonE = (Button) findViewById(R.id.buttonOneE);
         buttonE.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
 
 
-                //db.saveNotice("test4", editText.getText().toString());
+                db.addNotice("test5", editText.getText().toString());
                 String result=db.getNotice("test5");
 
                 textView.setText(result);
@@ -98,17 +112,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Map<String,String> map = new HashMap<>();
-                Map<String,String> map_ = new HashMap<>();
-                map.put("Rule2","너는 못 지나간다");
-                db.saveRule(map);
+                Rule rule1_1_2 = new Rule(1,1,2,"ex");
+                Rule rule3_1_1 = new Rule(3,1,1, "ex");
+                Rule rule2_2_2 = new Rule(2,2,2,"ex");
+                //db.addRule(rule1_1_2);
+                //db.addRule(rule3_1_1);
+                //db.addRule(rule2_2_2);
 
-                //map_ = db.getRule("Rule1");
 
-               // Toast.makeText(getApplicationContext(),map_.get("Rule1"),Toast.LENGTH_SHORT).show();
 
-                db.setJob(1,"YOOHYEONSEOK","경찰");
-                //db.paySalary(1,"YOOHYEONSEOK");
+                Toast.makeText(getApplicationContext(),listRule.toString(),Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+        Button buttonF = (Button) findViewById(R.id.buttonOneF);
+        buttonF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Toast.makeText(getApplicationContext(),formList.toString(),Toast.LENGTH_SHORT).show();
 
 
             }
