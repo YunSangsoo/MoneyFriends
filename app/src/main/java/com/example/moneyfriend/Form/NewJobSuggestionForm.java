@@ -14,4 +14,10 @@ public class NewJobSuggestionForm extends Form
 
     public String getReasonOfSuggestion() {return reasonOfSuggestion;}
     public int getSalary() {return salary;}
+
+    public String toString() {
+        return super.toString()+
+                "reasonOfSuggestion='" + reasonOfSuggestion + '\'' +
+                ", salary='" + salary + '\'';
+    }
 }

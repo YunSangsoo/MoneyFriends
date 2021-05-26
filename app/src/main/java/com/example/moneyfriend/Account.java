@@ -7,7 +7,7 @@ public class Account
     private static final int DEFAULT_BALANCE = 0;
     private String ownerOfAccount; //계좌 소유주
     private String accountNumber; // 계좌번호
-    private int balance; //통장잔액
+    private double balance; //통장잔액
 
     public Account() {}
 
@@ -27,7 +27,7 @@ public class Account
         return accountNumber;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 

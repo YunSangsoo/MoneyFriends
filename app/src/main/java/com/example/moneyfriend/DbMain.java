@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.moneyfriend.Form.Form;
 import com.example.moneyfriend.Form.JobApplicationForm;
+import com.example.moneyfriend.Form.NewJobSuggestionForm;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,10 +36,10 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
-public class DbMain {
+public class DbMain
+{
 
-    private String notice; //나중에 다음과 같은 String변수가 쓰이면 통합???
-
+    Object objectCallbackDB="null";
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
      final FirebaseFirestore db=FirebaseFirestore.getInstance();
@@ -55,7 +56,7 @@ public class DbMain {
              db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
      }
 
-     void deposit(int attendanceNumber, String ownerOfAccount, int amount, String savingsOrBank) // 입금 함수
+     void deposit(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 입금 함수
     {
         final DocumentReference accountRef;
 
@@ -71,13 +72,13 @@ public class DbMain {
             public void onComplete(@NonNull Task<DocumentSnapshot> task)
             {
                DocumentSnapshot documentSnapshot= task.getResult();
-                AccountLog log = new AccountLog(true,amount,Integer.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
+                AccountLog log = new AccountLog(true,amount,Double.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
                 addAccountLog(accountRef,log,savingsOrBank);
             }
         });
     }
 
-    int withdraw(int attendanceNumber, String ownerOfAccount, int amount, String savingsOrBank) // 출금 함수
+    double withdraw(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 출금 함수
     {
         DocumentReference accountRef;
 
@@ -91,7 +92,7 @@ public class DbMain {
             public void onComplete(@NonNull Task<DocumentSnapshot> task)
             {
                 DocumentSnapshot documentSnapshot= task.getResult();
-                AccountLog log = new AccountLog(false,amount,Integer.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
+                AccountLog log = new AccountLog(false,amount,Double.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
                 addAccountLog(accountRef,log,savingsOrBank);
             }
         });
@@ -140,9 +141,6 @@ public class DbMain {
 
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
-
-
-
                                 Form form = new JobApplicationForm
                                         (       document.get("studentName").toString(),
                                                 Integer.valueOf(document.get("attendanceNumber").toString()),
@@ -151,7 +149,7 @@ public class DbMain {
                                                 document.get("jobName").toString(),
                                                 document.get("contentsOfCertificate").toString() );
 
-                                Log.d("here",form.toString());
+                                //Log.d("here",form.toString());
                                 list.add(form);
                             }
 
@@ -168,7 +166,51 @@ public class DbMain {
 
     }
 
+    void suggestNewJob (NewJobSuggestionForm form) // 새직업 제안함수 _학생용
+    {
+        db.collection("Info/Form/FormList_NewJobSuggestion")
+                .document(form.getTitle()+"_"+form.getStudentName()+"_"+form.getAttendanceNumber()).set(form);
+    }
 
+    List<Form> getNewJobSuggestionForms () // 새직업 제안함수 _선생님용
+    {
+        List<Form> list = new ArrayList<>();
+        db.collection("Info/Form/FormList_NewJobSuggestion")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                Form form = new NewJobSuggestionForm
+                                        (       document.get("studentName").toString(),
+                                                Integer.valueOf(document.get("attendanceNumber").toString()),
+                                                document.get("title").toString(),
+                                                document.get("contents").toString(),
+                                                document.get("reasonOfSuggestion").toString(),
+                                                Integer.valueOf(document.get("salary").toString()) );
+
+
+                                list.add(form);
+                            }
+
+                        }
+                        else
+                        {
+                            Log.d("here!!!", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+        return list;
+
+    }
 
     void setJob(int attendanceNumber, String studentName, String jobName) // 직업 설정 함수
     {
@@ -178,13 +220,26 @@ public class DbMain {
 
     void paySalary (int attendanceNumber, String studentName) // 급여 지급 함수
     {
+        getTaxRate(new GetObjectCallback<Double>() {
+            @Override
+            public void callback(Double object)
+            {
+                Log.d("hereO",object.toString());
+                objectCallbackDB=object;
+                Log.d("hereO",objectCallbackDB.toString());
+            }
+        },"소득세");
+
         DocumentReference documentStudent = db.collection("User/Student/StudentList").document("Student_"+attendanceNumber+studentName);
         documentStudent.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
         {
+
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task)
             {
+
                 DocumentSnapshot documentSnapshot= task.getResult();
+                Log.d("here",documentSnapshot.get("job").toString());
                 DocumentReference documentJob =db.collection("Info/Job/JobList").document(documentSnapshot.get("job").toString());
 
                 documentJob.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
@@ -192,11 +247,18 @@ public class DbMain {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task)
                     {
+
                         DocumentSnapshot documentSnapshot= task.getResult();
 
-                        deposit(attendanceNumber,studentName,Integer.valueOf(documentSnapshot.get("salary").toString()),"Bank");
+                        double salary = Double.valueOf(documentSnapshot.get("salary").toString());
+                        salary=salary-salary*Double.valueOf(objectCallbackDB.toString());
+                        Log.d("here",String.valueOf(salary));
+
+                       deposit(attendanceNumber,studentName,salary,"Bank");
                     }
                 });
+
+
 
             }
         });
@@ -253,15 +315,16 @@ public class DbMain {
         return list;
     }
 
+
+
     void addNotice (String title, String content) /// 공지사항 추가 함수
     {
         Notice notice = new Notice(title,content, LocalDate.now(),LocalTime.now());
         db.collection("Info/Notice/NoticeList").document(title).set(notice);
     }
 
-    String getNotice (String title) /// 공지사항 가져오기 함수
+    void getNotice (@NonNull GetObjectCallback<String> Callback, String title) /// 공지사항 가져오기 함수
     {
-
         db.collection("Info/Notice/NoticeList").document(title).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
                 {
@@ -269,11 +332,10 @@ public class DbMain {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task)
                     {
                         DocumentSnapshot documentSnapshot= task.getResult();
-                        notice=documentSnapshot.get("content").toString();
-
+                        Callback.callback(documentSnapshot.get("content").toString());
                     }
                 });
-        return notice;
+
     }
 
     void addRule (Rule rule) // 규칙 추가 함수
@@ -322,6 +384,60 @@ public class DbMain {
         return list;
 
     }
+
+    void addTaxAct(Tax tax)
+    {
+        db.collection("Info/Tax/TaxList").document(tax.getName()).set(tax);
+    }
+    void editTaxRate (String taxName, double rate)
+    {
+        db.collection("Info/Tax/TaxList").document(taxName).update("taxRate", rate);
+    }
+    void deleteTaxAct(String taxName)
+    {
+        db.collection("Info/Tax/TaxList").document(taxName).delete();
+    }
+
+    void getTaxRate(@NonNull GetObjectCallback<Double> Callback, String taxName)
+    {
+        db.collection("Info/Tax/TaxList")
+                .document(taxName)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot)
+                    {
+                        Callback.callback(Double.valueOf(documentSnapshot.get("taxRate").toString()));
+                    }
+                });
+    }
+/*
+    double getTaxRate(String taxName)
+    {
+
+        db.collection("Info/Tax/TaxList")
+                .document(taxName)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot)
+                    {
+                        Log.d("here1",documentSnapshot.get("taxRate").toString());
+
+                        taxRate = Double.valueOf(documentSnapshot.get("taxRate").toString());
+                        Log.d("here2",String.valueOf(taxRate));
+                    }
+                });
+
+
+
+
+        Log.d("here3",String.valueOf(taxRate));
+
+        return taxRate;
+    }
+
+ */
 
 
 

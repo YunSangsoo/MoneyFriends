@@ -6,14 +6,14 @@ import java.time.LocalTime;
 public class AccountLog
 {
     private boolean depositOrWithdrawal; //입출금 구분
-    private int amount; // 거래금액
-    private int balance; // 잔액
+    private double amount; // 거래금액
+    private double balance; // 잔액
     private String dateOfTransaction; // 거래 일자
     private String timeOfTransaction; // 거래 시각
 
     public AccountLog () {}
 
-    public AccountLog(boolean depositOrWithdrawal, int amount, int balance, LocalDate dateOfTransaction, LocalTime timeOfTransaction)
+    public AccountLog(boolean depositOrWithdrawal, double amount, double balance, LocalDate dateOfTransaction, LocalTime timeOfTransaction)
     {
         this.depositOrWithdrawal = depositOrWithdrawal;
         this.amount = amount;
@@ -26,11 +26,11 @@ public class AccountLog
         return depositOrWithdrawal;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
