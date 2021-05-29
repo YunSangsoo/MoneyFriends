@@ -77,7 +77,8 @@ public class DbMain
             }
         });
     }
-
+  
+  
     double withdraw(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 출금 함수
     {
         DocumentReference accountRef;
@@ -117,9 +118,6 @@ public class DbMain
     }
 
     void calculateCreditScore () // 신용점수 계산 함수
-    {
-
-    }
 
     void applyForJob (JobApplicationForm form) // 직업 신청함수 _학생용
     {
@@ -438,16 +436,5 @@ public class DbMain
     }
 
  */
-
-
-
-
-
-
-
-
-
-
-
 
 }
