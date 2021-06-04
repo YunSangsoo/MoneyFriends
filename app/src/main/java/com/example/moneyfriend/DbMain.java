@@ -1,6 +1,8 @@
 package com.example.moneyfriend;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +11,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,8 +41,20 @@ public class DbMain {
     private String notice; //나중에 다음과 같은 String변수가 쓰이면 통합???
     private Map<String,String> rule= new HashMap<>();
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-     final FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    FirebaseFirestore db=FirebaseFirestore.getInstance();
+
+    private FirebaseUser curUser;
+
+     public DbMain(Context context){
+         mAuth = FirebaseAuth.getInstance();
+         curUser = mAuth.getCurrentUser();
+         mAuth.signInAnonymously();
+     }
+
+     public String test(){
+         return mAuth.getUid();
+     }
 
 
 
@@ -114,7 +130,7 @@ public class DbMain {
 
     }
 
-    void calculateCreditScore () // 신용점수 계산 함수
+    //void calculateCreditScore () // 신용점수 계산 함수
 
     void setJob(int attendanceNumber, String studentName, String job) // 직업 설정 함수
     {

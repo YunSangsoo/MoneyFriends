@@ -15,6 +15,7 @@ public class Student
     private int creditScore; // 신용점수
 
 
+
     private String uid;//UID
 
     public Student(String name, int attendanceNumber, int classNumber, String school)
@@ -51,13 +52,6 @@ public class Student
     public int getSalary() { return salary; }
 
     public int getCreditScore () {return  creditScore; }
-
-    public String getUid() { return  uid;}
-
-    public int putuid(String puid){
-        uid = puid;
-        return  1;
-    }
 
     public String getUid() { return uid;}
 

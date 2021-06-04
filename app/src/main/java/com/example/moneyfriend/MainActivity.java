@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -25,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DbMain db = new DbMain();
+
+        DbMain db = new DbMain(this);
 
         List<String> list=db.getJobList();
 
@@ -55,8 +58,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Student student =
-                        new Student("YOOHYEONSEOK", 1, 5, "숭실초등학교");
+                        new Student("YunSangSoo", 2, 1, "숭실초등학교");
                 db.signUp(student);
+
+                Toast.makeText(getApplicationContext(),db.test(),Toast.LENGTH_LONG).show();
 
 
             }
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 db.addJob(job1);
                 db.addJob(job2);
 
-                Toast.makeText(getApplicationContext(),list.toString(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),list.toString(),Toast.LENGTH_SHORT).show();
 
 
             }
