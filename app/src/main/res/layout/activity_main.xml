@@ -10,23 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/buttonOneD"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Button_Deposit"
-            >
-
-        </Button>
-
-        <Button
-            android:id="@+id/buttonOneW"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Button_Withdraw"
-            >
-
-        </Button>
 
         <Button
             android:id="@+id/buttonOneS"
@@ -62,7 +45,7 @@
             android:id="@+id/buttonOneE"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="saveNotice_getNotice"
+            android:text="addNotice_getNotice"
             >
 
         </Button>
@@ -81,10 +64,21 @@
             android:id="@+id/buttonOneR"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="saveRule_getRule"
+            android:text="addRule_getRule"
             >
 
         </Button>
+
+        <Button
+            android:id="@+id/buttonOneF"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="addForm_getForm"
+            >
+
+        </Button>
+
+
 
 
     </LinearLayout>
