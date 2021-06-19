@@ -42,21 +42,21 @@ public class DbMain
     Object objectCallbackDB="null";
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-     final FirebaseFirestore db=FirebaseFirestore.getInstance();
+    final FirebaseFirestore db=FirebaseFirestore.getInstance();
 
 
 
-     void openAccount(int attendanceNumber, String ownerOfAccount, boolean savingsOrNot) //계좌 개설 함수
-     {
+    void openAccount(int attendanceNumber, String ownerOfAccount, boolean savingsOrNot) //계좌 개설 함수
+    {
 
-         Account account = new Account(ownerOfAccount);
-         if (savingsOrNot == true)
-             db.collection("Info/Account/SavingsAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
-         else
-             db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
-     }
+        Account account = new Account(ownerOfAccount);
+        if (savingsOrNot == true)
+            db.collection("Info/Account/SavingsAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
+        else
+            db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
+    }
 
-     void deposit(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 입금 함수
+    void deposit(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 입금 함수
     {
         final DocumentReference accountRef;
 
@@ -71,14 +71,14 @@ public class DbMain
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task)
             {
-               DocumentSnapshot documentSnapshot= task.getResult();
+                DocumentSnapshot documentSnapshot= task.getResult();
                 AccountLog log = new AccountLog(true,amount,Double.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
                 addAccountLog(accountRef,log,savingsOrBank);
             }
         });
     }
-  
-  
+
+
     double withdraw(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 출금 함수
     {
         DocumentReference accountRef;
@@ -116,99 +116,99 @@ public class DbMain
         documentReference.set(student);
 
     }
+    /*
+        void calculateCreditScore () // 신용점수 계산 함수
+*/
+        void applyForJob (JobApplicationForm form) // 직업 신청함수 _학생용
+        {
+            db.collection("Info/Form/FormList_JobApplication").document(form.getStudentName()+"_"+form.getAttendanceNumber()).set(form);
+        }
 
-    void calculateCreditScore () // 신용점수 계산 함수
-
-    void applyForJob (JobApplicationForm form) // 직업 신청함수 _학생용
-    {
-        db.collection("Info/Form/FormList_JobApplication").document(form.getStudentName()+"_"+form.getAttendanceNumber()).set(form);
-    }
-
-    List<Form> getJobApplicationForms () // 직업 신청함수 _선생님용
-    {
-        List<Form> list = new ArrayList<>();
-        db.collection("Info/Form/FormList_JobApplication")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+        List<Form> getJobApplicationForms () // 직업 신청함수 _선생님용
+        {
+            List<Form> list = new ArrayList<>();
+            db.collection("Info/Form/FormList_JobApplication")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
                     {
-                        if (task.isSuccessful())
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task)
                         {
-
-                            for (QueryDocumentSnapshot document : task.getResult())
+                            if (task.isSuccessful())
                             {
-                                Form form = new JobApplicationForm
-                                        (       document.get("studentName").toString(),
-                                                Integer.valueOf(document.get("attendanceNumber").toString()),
-                                                document.get("title").toString(),
-                                                document.get("contents").toString(),
-                                                document.get("jobName").toString(),
-                                                document.get("contentsOfCertificate").toString() );
 
-                                //Log.d("here",form.toString());
-                                list.add(form);
+                                for (QueryDocumentSnapshot document : task.getResult())
+                                {
+                                    Form form = new JobApplicationForm
+                                            (       document.get("studentName").toString(),
+                                                    Integer.valueOf(document.get("attendanceNumber").toString()),
+                                                    document.get("title").toString(),
+                                                    document.get("contents").toString(),
+                                                    document.get("jobName").toString(),
+                                                    document.get("contentsOfCertificate").toString() );
+
+                                    //Log.d("here",form.toString());
+                                    list.add(form);
+                                }
+
                             }
-
+                            else
+                            {
+                                Log.d("here!!!", "Error getting documents: ", task.getException());
+                            }
                         }
-                        else
-                        {
-                            Log.d("here!!!", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+                    });
 
 
-        return list;
+            return list;
 
-    }
+        }
 
-    void suggestNewJob (NewJobSuggestionForm form) // 새직업 제안함수 _학생용
-    {
-        db.collection("Info/Form/FormList_NewJobSuggestion")
-                .document(form.getTitle()+"_"+form.getStudentName()+"_"+form.getAttendanceNumber()).set(form);
-    }
+        void suggestNewJob (NewJobSuggestionForm form) // 새직업 제안함수 _학생용
+        {
+            db.collection("Info/Form/FormList_NewJobSuggestion")
+                    .document(form.getTitle()+"_"+form.getStudentName()+"_"+form.getAttendanceNumber()).set(form);
+        }
 
-    List<Form> getNewJobSuggestionForms () // 새직업 제안함수 _선생님용
-    {
-        List<Form> list = new ArrayList<>();
-        db.collection("Info/Form/FormList_NewJobSuggestion")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+        List<Form> getNewJobSuggestionForms () // 새직업 제안함수 _선생님용
+        {
+            List<Form> list = new ArrayList<>();
+            db.collection("Info/Form/FormList_NewJobSuggestion")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
                     {
-                        if (task.isSuccessful())
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task)
                         {
-
-                            for (QueryDocumentSnapshot document : task.getResult())
+                            if (task.isSuccessful())
                             {
-                                Form form = new NewJobSuggestionForm
-                                        (       document.get("studentName").toString(),
-                                                Integer.valueOf(document.get("attendanceNumber").toString()),
-                                                document.get("title").toString(),
-                                                document.get("contents").toString(),
-                                                document.get("reasonOfSuggestion").toString(),
-                                                Integer.valueOf(document.get("salary").toString()) );
+
+                                for (QueryDocumentSnapshot document : task.getResult())
+                                {
+                                    Form form = new NewJobSuggestionForm
+                                            (       document.get("studentName").toString(),
+                                                    Integer.valueOf(document.get("attendanceNumber").toString()),
+                                                    document.get("title").toString(),
+                                                    document.get("contents").toString(),
+                                                    document.get("reasonOfSuggestion").toString(),
+                                                    Integer.valueOf(document.get("salary").toString()) );
 
 
-                                list.add(form);
+                                    list.add(form);
+                                }
+
                             }
-
+                            else
+                            {
+                                Log.d("here!!!", "Error getting documents: ", task.getException());
+                            }
                         }
-                        else
-                        {
-                            Log.d("here!!!", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+                    });
 
 
-        return list;
+            return list;
 
-    }
+        }
 
     void setJob(int attendanceNumber, String studentName, String jobName) // 직업 설정 함수
     {
@@ -252,7 +252,7 @@ public class DbMain
                         salary=salary-salary*Double.valueOf(objectCallbackDB.toString());
                         Log.d("here",String.valueOf(salary));
 
-                       deposit(attendanceNumber,studentName,salary,"Bank");
+                        deposit(attendanceNumber,studentName,salary,"Bank");
                     }
                 });
 
@@ -335,6 +335,39 @@ public class DbMain
                 });
 
     }
+
+
+    List<String> getNoticeList() /// 공지 List 가져오기 함수
+    {
+        List<String> list = new ArrayList<>();
+
+        db.collection("Info/Notice/NoticeList")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                list.add(document.getId());
+                            }
+
+                        }
+                        else
+                        {
+                            Log.d("here!!!", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        return list;
+    }
+
+
 
     void addRule (Rule rule) // 규칙 추가 함수
     {

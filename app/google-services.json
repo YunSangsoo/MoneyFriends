@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "599011783203-igljddsff9j2ch10dgaqkjpj5s2evov2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moneyfriend",
+            "certificate_hash": "ec112bb062b9283d2dfbb3eef764a728ba7e1e33"
+          }
+        },
+        {
           "client_id": "599011783203-i8vdr61tlc4mgnnktfrut747n372ak96.apps.googleusercontent.com",
           "client_type": 3
         }

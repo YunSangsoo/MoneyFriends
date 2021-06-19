@@ -59,12 +59,4 @@ public class Student
         return  1;
     }
 
-    public String getUid() { return uid;}
-
-
-    //예시
-    public int putuid(String puid){
-        uid = puid;
-        return 1;
-    }
 }

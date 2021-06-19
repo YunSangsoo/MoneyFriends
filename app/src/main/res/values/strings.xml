@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MoneyFriend</string>
+    <string name="moneyfriend_mark">moneyfriend_mark</string>
+    <string name="시작하기">시작하기</string>
 </resources>
