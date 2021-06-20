@@ -1,11 +1,13 @@
 package com.example.moneyfriend;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.motion.utils.Oscillator;
 
 import com.example.moneyfriend.Form.Form;
 import com.example.moneyfriend.Form.JobApplicationForm;
@@ -15,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -36,6 +39,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import static android.content.ContentValues.TAG;
 
@@ -44,34 +48,36 @@ public class DbMain
 
     Object objectCallbackDB="null";
 
-    private FirebaseAuth mAuth;
-    FirebaseFirestore db=FirebaseFirestore.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();;
+    emailAuth emAuth;
 
-    private FirebaseUser curUser;
+    public DbMain(){
 
-     public DbMain(Context context){
-         mAuth = FirebaseAuth.getInstance();
-         curUser = mAuth.getCurrentUser();
-         mAuth.signInAnonymously();
-     }
+        String email = "yss6024@naver.com";
+        String password = "Vlrmrkdl1!";
+        emAuth = new emailAuth();
 
-     public String test(){
-         return mAuth.getUid();
-     }
+        //emAuth.createAccount(email,password);
+        emAuth.signIn(email,password);
+    }
+/*
+    public String getuid(){
+        return emAuth.getuid();
+    }*/
 
 
 
-     void openAccount(int attendanceNumber, String ownerOfAccount, boolean savingsOrNot) //계좌 개설 함수
-     {
+    void openAccount(int attendanceNumber, String ownerOfAccount, boolean savingsOrNot) //계좌 개설 함수
+    {
 
-         Account account = new Account(ownerOfAccount);
-         if (savingsOrNot == true)
-             db.collection("Info/Account/SavingsAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
-         else
-             db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
-     }
+        Account account = new Account(ownerOfAccount);
+        if (savingsOrNot == true)
+            db.collection("Info/Account/SavingsAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
+        else
+            db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
+    }
 
-     void deposit(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 입금 함수
+    void deposit(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 입금 함수
     {
         final DocumentReference accountRef;
 
@@ -86,14 +92,14 @@ public class DbMain
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task)
             {
-               DocumentSnapshot documentSnapshot= task.getResult();
+                DocumentSnapshot documentSnapshot= task.getResult();
                 AccountLog log = new AccountLog(true,amount,Double.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
                 addAccountLog(accountRef,log,savingsOrBank);
             }
         });
     }
-  
-  
+
+
     double withdraw(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 출금 함수
     {
         DocumentReference accountRef;
@@ -121,14 +127,87 @@ public class DbMain
         accountRef.collection("AccountDetails").document("Log_"+log.getDateOfTransaction()+"_"+log.getTimeOfTransaction()).set(log);
     }
 
+    void checkAccount(boolean savingsOrNot){
+        Account account = new Account(data.student.getName());
+        if (savingsOrNot == true){
+            db.collection("Info/Account/SavingsAccount").document("Account_"+data.student.getAttendanceNumber()+data.student.getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        boolean isEmpty = task.getResult().exists();
+                        if(!isEmpty){
+                            data.db.openAccount(data.student.getAttendanceNumber(),data.student.getName(),false);
+                        }
+                        else{
+                            Log.d(Oscillator.TAG,"account is already");
+                        }
+                    }
+                }
+            });
+        }
+        else {
+            db.collection("Info/Account/BankAccount").document("Account_" + data.student.getAttendanceNumber() + data.student.getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        boolean isEmpty = task.getResult().exists();
+                        if (!isEmpty) {
+                            data.db.openAccount(data.student.getAttendanceNumber(), data.student.getName(), false);
+                        } else {
+                            Log.d(Oscillator.TAG, "account is already");
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    void updatebalance(){
+        data.student.setSalary(0);
+
+
+        db.collection("Info/Account/SavingsAccount")
+                .document("Account_"+data.student.getAttendanceNumber()+data.student.getName())
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentS) {
+                if(documentS.exists()){
+                    int sal1 = Integer.parseInt(documentS.get("balance").toString());
+                    if(data.student.getSalary()==0){
+                        data.student.setSalary(sal1);
+                    }
+                    else{
+                        data.student.setSalary(data.student.getSalary()+sal1);
+                    }
+                    db.collection("User/Student/StudentList").document("Student_"+data.student.getAttendanceNumber()+data.student.getName()).update("salary",data.student.getSalary());
+                }
+            }
+        });
+        db.collection("Info/Account/BankAccount")
+                .document("Account_" + data.student.getAttendanceNumber() + data.student.getName())
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentS) {
+                int sal2 = Integer.parseInt(documentS.get("balance").toString());
+                if (data.student.getSalary() == 0) {
+                    data.student.setSalary(sal2);
+                } else {
+                    data.student.setSalary(data.student.getSalary() + sal2);
+                }
+                db.collection("User/Student/StudentList").document("Student_" + data.student.getAttendanceNumber() + data.student.getName()).update("salary", data.student.getSalary());
+            }
+        });
+    }
+
 
     void signUp (Student student) // 회원가입 함수
     {
-        student.putuid(mAuth.getUid());
+        db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName()).set(student);
+        //student.putuid(mAuth.getUid());
 
-        DocumentReference documentReference = db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName());
+        //DocumentReference documentReference = db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName()).set(student);
 
-        documentReference.set(student);
+        //documentReference.set(student);
 
     }
 
@@ -267,7 +346,7 @@ public class DbMain
                         salary=salary-salary*Double.valueOf(objectCallbackDB.toString());
                         Log.d("here",String.valueOf(salary));
 
-                       deposit(attendanceNumber,studentName,salary,"Bank");
+                        deposit(attendanceNumber,studentName,salary,"Bank");
                     }
                 });
 
@@ -451,5 +530,56 @@ public class DbMain
     }
 
  */
+
+    List<String> getNoticeList() /// 공지 List 가져오기 함수
+    {
+        List<String> list = new ArrayList<>();
+
+        db.collection("Info/Notice/NoticeList")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                list.add(document.getId());
+                            }
+
+                        }
+                        else
+                        {
+                            Log.d("here!!!", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        return list;
+    }
+    void loadUserInform(String name, int attendNum){
+        db.collection("User/Student/StudentList").document("Student_"+attendNum+name)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String Name,school;
+                        int classNumber,attendanceNumber;
+
+                        Log.d(TAG,"succes : "+"Student_"+attendNum+name+" : "+documentSnapshot);
+
+                        Name = name;
+                        school = documentSnapshot.get("school").toString();
+                        classNumber = Integer.parseInt(documentSnapshot.get("classNumber").toString());
+                        attendanceNumber = attendNum;
+
+                        data.student = new Student(Name, attendanceNumber, classNumber, school);
+
+                    }
+                });
+    }
 
 }

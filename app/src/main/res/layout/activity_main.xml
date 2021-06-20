@@ -6,81 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/value_mainTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="3학년 1반 행복국"
+        android:textColor="#E86547"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/topNavi"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        app:itemIconTint="#555555"
+        app:itemTextColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/top_menu" />
 
-        <Button
-            android:id="@+id/buttonOneS"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Button_Student"
-            >
+    <FrameLayout
+        android:id="@+id/main_frame"
+        android:layout_width="400dp"
+        android:layout_height="620dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topNavi"
+        app:layout_constraintVertical_bias="1.0">
 
-        </Button>
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/buttonOneJ"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Button_Job"
-            >
-
-        </Button>
-
-        <EditText
-            android:id="@+id/edit_"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:inputType="none"
-            android:singleLine="false"
-            android:scrollHorizontally="false"
-            android:hint="Please enter a text"
-            >
-
-        </EditText>
-
-        <Button
-            android:id="@+id/buttonOneE"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="addNotice_getNotice"
-            >
-
-        </Button>
-
-        <TextView
-            android:id="@+id/textview"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:textStyle="bold"
-            android:text="Result!"
-            >
-
-        </TextView>
-
-        <Button
-            android:id="@+id/buttonOneR"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="addRule_getRule"
-            >
-
-        </Button>
-
-        <Button
-            android:id="@+id/buttonOneF"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="addForm_getForm"
-            >
-
-        </Button>
-
-
-
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
