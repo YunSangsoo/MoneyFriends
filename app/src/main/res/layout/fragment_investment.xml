@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/nanumbarungothic"
         android:text="내 적금"
         android:textColor="#000000"
@@ -103,7 +103,7 @@
     </FrameLayout>
     <!--적금 정보 표시를 위한 Framlayout 끝입니다.-->
 
-
+<!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!--주식 정보 표시를 위한 Framlayout 시작입니다.-->
+    &lt;!&ndash;주식 정보 표시를 위한 Framlayout 시작입니다.&ndash;&gt;
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -259,6 +259,6 @@
 
         </LinearLayout>
     </FrameLayout>
-    <!--주식 정보 표시를 위한 Framlayout 끝입니다.-->
+    주식 정보 표시를 위한 Framlayout 끝입니다.-->
 
 </LinearLayout>

@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button btn_login;
+    Button btn_login, btn_signIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +17,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         btn_login = findViewById(R.id.btn_login); //xml button 연결(시작 페이지에서 btn_start를 누르면 메인 페이지로 이동 할 수 있도록 버튼 구현)
+        btn_signIn = findViewById(R.id.btn_signUp);
+
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,5 +31,15 @@ public class LoginActivity extends AppCompatActivity {
                 finish(); //start activity를 메모리에서 제거, 기기의 back 버튼을 눌러도 시작페이지로 다시 돌아오는 것을 방지하기 위함입니다.
             }
         });
+
+        btn_signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(LoginActivity.this, SignUpActivity.class);
+
+                startActivity(intent2);
+            }
+        });
+
     }
 }

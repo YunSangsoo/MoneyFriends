@@ -36,7 +36,7 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
-public class DbMain
+public class  DbMain
 {
 
     Object objectCallbackDB="null";
