@@ -17,7 +17,9 @@ public class SignUpActivity extends AppCompatActivity {
     EditText school, // 학교
             studentName, // 학생 이름
             atndNumber, // 출석 번호
-            classNumber; // 반
+            classNumber, // 반
+            email, //이메일
+            password; // 비밀번호
 
     Button btn_confirm; //확인 버튼
 
@@ -33,6 +35,9 @@ public class SignUpActivity extends AppCompatActivity {
         studentName = findViewById(R.id.etxt_signUpName);
         classNumber = findViewById(R.id.etxt_signUpclassNumber);
         atndNumber = findViewById(R.id.etxt_signUpAttendanceNumber);
+
+        email = findViewById(R.id.etxt_email);
+        password = findViewById(R.id.etxt_PWD);
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
                @Override

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".investment_noAccount">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        android:text="가입된 적금이 없습니다."
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/nanumbarungothic"
+        android:textColor="#777777"
+        />
+</LinearLayout>
