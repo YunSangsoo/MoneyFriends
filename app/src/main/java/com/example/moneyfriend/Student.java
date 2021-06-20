@@ -15,7 +15,8 @@ public class Student
     private int creditScore; // 신용점수
 
 
-    private String uid;//UID
+
+    //private String uid;//UID
 
     public Student(String name, int attendanceNumber, int classNumber, String school)
     {
@@ -29,7 +30,7 @@ public class Student
         this.creditScore = DEFAULT_CREDIT_SCORE;
       
         //uid
-        this.uid = null;
+        //this.uid = null;
     }
 
     public String getName() {
@@ -50,21 +51,19 @@ public class Student
 
     public int getSalary() { return salary; }
 
-    public int getCreditScore () {return  creditScore; }
-
-    public String getUid() { return  uid;}
-
-    public int putuid(String puid){
-        uid = puid;
-        return  1;
+    public void setSalary(int sal){
+        this.salary = sal;
     }
 
-    public String getUid() { return uid;}
+    public int getCreditScore () {return  creditScore; }
+
+    //public String getUid() { return uid;}
 
 
     //예시
+    /*
     public int putuid(String puid){
-        uid = puid;
+        this.uid = puid;
         return 1;
-    }
+    }*/
 }
