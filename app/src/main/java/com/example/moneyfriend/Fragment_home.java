@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import java.util.List;
 
 public class Fragment_home extends Fragment {
-    DbMain db = new DbMain();
+    DbMain db = data.db;
     List<String> NoticeTitleList = db.getNoticeList();
 
     private View view;

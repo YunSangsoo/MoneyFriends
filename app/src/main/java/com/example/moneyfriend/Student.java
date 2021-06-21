@@ -8,7 +8,7 @@ public class Student
 
     private String name;
     private int attendanceNumber; //출석번호
-    private int classNumber; //반
+    private String classNumber; //반
     private String school; //학교
     private String job; //직업
     private int salary;// 급여
@@ -18,7 +18,7 @@ public class Student
 
     //private String uid;//UID
 
-    public Student(String name, int attendanceNumber, int classNumber, String school)
+    public Student(String name, int attendanceNumber, String classNumber, String school)
     {
         this.name = name;
         this.attendanceNumber = attendanceNumber;
@@ -41,7 +41,7 @@ public class Student
         return attendanceNumber;
     }
 
-    public int getClassNumber() {
+    public String getClassNumber() {
         return classNumber;
     }
 

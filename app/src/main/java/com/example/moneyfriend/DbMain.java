@@ -1,6 +1,7 @@
 package com.example.moneyfriend;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -51,14 +52,23 @@ public class DbMain
     FirebaseFirestore db = FirebaseFirestore.getInstance();;
     emailAuth emAuth;
 
-    public DbMain(){
+    public DbMain(String email,String password){
 
-        String email = "yss6024@naver.com";
-        String password = "Vlrmrkdl1!";
         emAuth = new emailAuth();
 
-        //emAuth.createAccount(email,password);
+        emAuth.createAccount(email,password);
+
+        //emAuth.signIn(email,password);
+    }
+    public DbMain(String email,String password, int tmp){
+
+        Log.d(TAG,"sign start");
+        emAuth = new emailAuth();
         emAuth.signIn(email,password);
+        Log.d(TAG,"sign end");
+    }
+
+    public void signinauth(String email,String password){
     }
 /*
     public String getuid(){
@@ -200,9 +210,10 @@ public class DbMain
     }
 
 
-    void signUp (Student student) // 회원가입 함수
+    void signUp (Student student,String email) // 회원가입 함수
     {
-        db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName()).set(student);
+        //db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName()).set(student);
+        db.collection("User/Student/StudentList").document(email).set(student);
         //student.putuid(mAuth.getUid());
 
         //DocumentReference documentReference = db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName()).set(student);
@@ -560,23 +571,27 @@ public class DbMain
 
         return list;
     }
-    void loadUserInform(String name, int attendNum){
-        db.collection("User/Student/StudentList").document("Student_"+attendNum+name)
+    void loadUserInform(String email,LoginActivity context){
+        db.collection("User/Student/StudentList").document(email)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String Name,school;
-                        int classNumber,attendanceNumber;
+                        String Name,school,classNumber;
+                        int attendanceNumber;
 
-                        Log.d(TAG,"succes : "+"Student_"+attendNum+name+" : "+documentSnapshot);
-
-                        Name = name;
+                        Name = documentSnapshot.get("name").toString();
                         school = documentSnapshot.get("school").toString();
-                        classNumber = Integer.parseInt(documentSnapshot.get("classNumber").toString());
-                        attendanceNumber = attendNum;
+                        classNumber = documentSnapshot.get("classNumber").toString();
+                        attendanceNumber = Integer.parseInt(documentSnapshot.get("attendanceNumber").toString());
 
                         data.student = new Student(Name, attendanceNumber, classNumber, school);
+
+                        Intent intent = new Intent(context, MainActivity.class); //intent (move page from StartActivity to MainActivity)
+                        context.dialog.cancel();
+                        context.startActivity(intent);//activity 이동 구문
+                        context.overridePendingTransition(0, 0); // 화면전환 시 애니메이션 제거를 위한 구문입니다.
+                        context.finish();
 
                     }
                 });

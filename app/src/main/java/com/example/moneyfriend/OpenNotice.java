@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class OpenNotice extends AppCompatActivity {
-    DbMain db = new DbMain();
+    DbMain db = data.db;
     Object objectCallback;
     TextView noticeTitle, noticeDate, NoticeContent;
 
