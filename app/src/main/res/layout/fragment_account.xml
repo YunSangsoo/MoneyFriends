@@ -34,7 +34,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/nanumbarungothic"
             android:gravity="right"
-            android:text="731 점"
+            android:text="0 점"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -61,23 +61,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanumbarungothic"
-                android:text="내 신용점수는 우리반에서 상위 20% 이에요"
+                android:text="내 신용점수는 20점 이에요"
                 android:textColor="#000000"
                 android:textSize="17sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/value_expectedInterestRate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:fontFamily="@font/nanumbarungothic"
-                android:text="예상 적금 이자율 14일 6%, 28일 10%"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="15sp"
-
-                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -163,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanumbarungothic"
-                android:text="내 예금 통장"
+                android:text="내 통장"
                 android:textColor="#000000"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -175,11 +162,11 @@
                 android:layout_marginTop="10dp">
 
                 <ImageView
-                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center_horizontal"
+
+                    android:layout_marginTop="5dp"
                     app:srcCompat="@drawable/ic_card"
                     tools:ignore="VectorDrawableCompat" />
 
@@ -187,52 +174,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/value_balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanumbarungothic"
+                        android:padding="10dp"
                         android:text="내 예금 통장"
                         android:textColor="#000000"
                         android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:padding="10dp"
-                        />
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
 
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="3dp"
-                            >
+                            android:padding="3dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="계좌번호: "
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="계좌번호: "
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
 
                             <TextView
                                 android:id="@+id/value_accountFrag_accountNumber"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="123412341234"
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="123412341234"
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
 
                         </LinearLayout>
@@ -241,39 +223,35 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="3dp"
-                            >
+                            android:padding="3dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="잔액: "
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="잔액: "
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
 
                             <TextView
                                 android:id="@+id/value_accountFrag_accountBalance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3000"
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="3000"
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="#000000"
-                                android:text=" 미소"
                                 android:fontFamily="@font/nanumbarungothic"
+                                android:text=" 미소"
+                                android:textColor="#000000"
                                 android:textStyle="bold"
 
                                 />
-
-
 
 
                         </LinearLayout>
@@ -290,51 +268,47 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="60dp"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="거래일         내용         금액        남은금액"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="#000000"
                         android:fontFamily="@font/nanumbarungothic"
                         android:padding="3dp"
-                        />
+                        android:text="거래일         내용         금액        남은금액"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/etxt_accountLog1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20210001      입금         2000                  2000"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
                         android:fontFamily="@font/nanumbarungothic"
                         android:padding="2dp"
-                        />
+                        android:text="20210001      입금         2000                  2000"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
                     <TextView
                         android:id="@+id/etxt_accountLog2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="20210001      출금         1000                1000"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
                         android:fontFamily="@font/nanumbarungothic"
                         android:padding="2dp"
-                        />
+                        android:text="20210001      출금         1000                  1000"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
                     <TextView
                         android:id="@+id/etxt_accountLog3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20210001      입금         2000                  3000"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
                         android:fontFamily="@font/nanumbarungothic"
                         android:padding="2dp"
-                        />
-
-
+                        android:text="20210001      입금         2000                  3000"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
 
 
                 </LinearLayout>
@@ -376,11 +350,11 @@
                 android:layout_marginTop="10dp">
 
                 <ImageView
-                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center_horizontal"
+
+                    android:layout_marginTop="5dp"
                     app:srcCompat="@drawable/ic_card"
                     tools:ignore="VectorDrawableCompat" />
 
@@ -388,52 +362,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="10dp"
-                    >
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanumbarungothic"
-                        android:text="내 예금 통장"
+                        android:padding="10dp"
+                        android:text="내 적금 통장"
                         android:textColor="#000000"
                         android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:padding="10dp"
-                        />
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_marginLeft="10dp"
-                        >
+                        android:orientation="vertical">
 
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="3dp"
-                            >
+                            android:padding="3dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="계좌번호: "
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="계좌번호: "
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
 
                             <TextView
                                 android:id="@+id/value_accountFrag_installmentNumber"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="123412341234"
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="123412341234"
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
 
                         </LinearLayout>
@@ -442,78 +411,71 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="3dp"
-                            >
+                            android:padding="3dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="잔액: "
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="잔액: "
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
 
                             <TextView
                                 android:id="@+id/value_accountFrag_InstallmentBalance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="4500"
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="4500"
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="#000000"
-                                android:text=" 미소"
                                 android:fontFamily="@font/nanumbarungothic"
+                                android:text=" 미소"
+                                android:textColor="#000000"
                                 android:textStyle="bold"
 
                                 />
-
-
 
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="3dp"
-                            >
+                            android:padding="3dp">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="계좌번호: "
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="이자율: "
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
 
                             <TextView
                                 android:id="@+id/value_accountFrag_installmentInterestRate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3"
                                 android:fontFamily="@font/nanumbarungothic"
-                                android:textStyle="bold"
+                                android:text="3"
                                 android:textColor="#000000"
-                                />
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="#000000"
-                                android:text=" %"
                                 android:fontFamily="@font/nanumbarungothic"
+                                android:text=" %"
+                                android:textColor="#000000"
                                 android:textStyle="bold"
 
                                 />
-
-
 
 
                         </LinearLayout>
@@ -526,6 +488,18 @@
 
 
             </FrameLayout>
+
+            <Button
+                android:id="@+id/btn_deposit"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:backgroundTint="#FFB800"
+                android:fontFamily="@font/nanumbarungothic"
+                android:gravity="center"
+                android:text="입금하기"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>

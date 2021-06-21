@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,13 +31,17 @@ public class Fragment_board extends Fragment {
     private List<ListItem> noticeList;
 
     DbMain db = data.db;
-    List<String> titleList = db.getNoticeList();
 
     Object objectCallback;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable  Bundle savedInstanceState) {
+
+
+        data.NoticeTitleList = db.getNoticeList();
+        List<String> titleList = data.NoticeTitleList;
+
         view = inflater.inflate(R.layout.fragment_board,container, false);
         noticeListView = (ListView) view.findViewById(R.id.board_main);
         noticeList = new ArrayList<ListItem>();

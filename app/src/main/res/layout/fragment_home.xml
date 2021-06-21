@@ -149,10 +149,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/nanumbarungothic"
-        android:text="우리반 세금"
+        android:text="보유 잔액"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -198,6 +197,18 @@
         app:layout_constraintTop_toTopOf="@+id/text_tax" />
 
     <TextView
+        android:id="@+id/text_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="%"
+        android:textColor="#000000"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/value_stockPrice"
+        app:layout_constraintTop_toTopOf="@+id/text_stockName" />
+
+    <TextView
         android:id="@+id/value_stockPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -230,7 +241,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/nanumbarungothic"
-        android:text="오늘의 주가"
+        android:text="보유 적금"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -280,7 +291,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:padding="10dp"
-            android:text="공지사항"
+            android:text=" "
             android:textColor="#000000"
             android:textStyle="bold" />
 
@@ -291,7 +302,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="22dp"
             android:padding="3dp"
-            android:text="날짜"
+            android:text=" "
             android:textColor="#000000"
             android:textColorHint="#000000" />
 
@@ -315,7 +326,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:padding="10dp"
-            android:text="공지사항"
+            android:text=" "
             android:textColor="#000000"
             android:textStyle="bold" />
 
@@ -326,7 +337,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="22dp"
             android:padding="3dp"
-            android:text="날짜"
+            android:text=" "
             android:textColor="#000000"
             android:textColorHint="#000000" />
 
@@ -348,7 +359,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:padding="10dp"
-            android:text="공지사항"
+            android:text=" "
             android:textColor="#000000"
             android:textStyle="bold" />
 
@@ -359,7 +370,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="22dp"
             android:padding="3dp"
-            android:text="날짜"
+            android:text=" "
             android:textColor="#000000"
             android:textColorHint="#000000" />
 

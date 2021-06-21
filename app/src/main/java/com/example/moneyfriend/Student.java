@@ -57,6 +57,10 @@ public class Student
 
     public int getCreditScore () {return  creditScore; }
 
+    public void setCreditScore (int credits) {
+        this.creditScore = credits;
+    }
+
     //public String getUid() { return uid;}
 
 

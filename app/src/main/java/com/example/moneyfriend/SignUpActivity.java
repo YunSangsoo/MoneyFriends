@@ -70,14 +70,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                        && studentName.getText().toString().length() != 0
                                                        && classNumber.getText().toString().length() != 0
                                                        && atndNumber.getText().toString().length() != 0) {
-                                                   /*
-
-                                                   Student student = new Student(studentName.getText().toString(),
-                                                           Integer.parseInt(atndNumber.getText().toString()),
-                                                           Integer.parseInt(classNumber.getText().toString()),
-                                                           school.getText().toString());
-
-                                                   db.signUp(student);*/
 
                                                    SignUpActivity.asyncT asynct = new SignUpActivity.asyncT();
                                                    asynct.execute();
@@ -86,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                    startActivity(intent2);
 
-                                                   finish();
+                                                   //finish();
                                                    //Toast.makeText(getApplicationContext(), "학교: "+ school.getText().toString(), Toast.LENGTH_SHORT).show();
 
                                                }
@@ -106,17 +98,13 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
+            /*
             builder = new AlertDialog.Builder(SignUpActivity.this);
-            builder.setTitle("wait"); builder.setMessage("Loading");
-            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
+            builder.setTitle("wait");
+            builder.setMessage("Loading");
             builder.setCancelable(false);
             dialog = builder.create();
-            dialog.show();
+            dialog.show();*/
 
         }
         @Override
@@ -129,8 +117,6 @@ public class SignUpActivity extends AppCompatActivity {
                     classNumber.getText().toString(),
                     school.getText().toString());
 
-            data.db.signinauth(data.email,password.getText().toString());
-
             data.db.signUp(data.student,data.email);
 
             return null;
@@ -141,8 +127,8 @@ public class SignUpActivity extends AppCompatActivity {
             data.editor.putString("name",data.student.getName());
             data.editor.putInt("attendanceNumber",data.student.getAttendanceNumber());
             data.editor.apply();
+            //dialog.cancel();
             super.onPostExecute(result);
-            dialog.cancel();
         }
 
 

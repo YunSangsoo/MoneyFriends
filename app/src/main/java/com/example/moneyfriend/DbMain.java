@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,8 +36,12 @@ import com.google.protobuf.StringValue;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +73,6 @@ public class DbMain
         Log.d(TAG,"sign end");
     }
 
-    public void signinauth(String email,String password){
-    }
 /*
     public String getuid(){
         return emAuth.getuid();
@@ -79,12 +82,16 @@ public class DbMain
 
     void openAccount(int attendanceNumber, String ownerOfAccount, boolean savingsOrNot) //계좌 개설 함수
     {
-
-        Account account = new Account(ownerOfAccount);
-        if (savingsOrNot == true)
-            db.collection("Info/Account/SavingsAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
-        else
-            db.collection("Info/Account/BankAccount").document("Account_"+attendanceNumber+ownerOfAccount).set(account);
+        if (savingsOrNot == true) {
+            data.Saccount = new Account(ownerOfAccount);
+            db.collection("Info/Account/SavingsAccount").document("Account_" + attendanceNumber + ownerOfAccount).set(data.Saccount);
+        }
+        else {
+            data.Baccount = new Account(ownerOfAccount);
+            db.collection("Info/Account/BankAccount").document("Account_" + attendanceNumber + ownerOfAccount).set(data.Baccount);
+            deposit(data.student.getAttendanceNumber(),data.student.getName(),10000,"Bank");
+            data.student.setSalary(10000);
+        }
     }
 
     void deposit(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 입금 함수
@@ -97,13 +104,11 @@ public class DbMain
 
 
 
-        accountRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
-        {
+        accountRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task)
-            {
-                DocumentSnapshot documentSnapshot= task.getResult();
-                AccountLog log = new AccountLog(true,amount,Double.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d(TAG,"입금 : " + documentSnapshot.toString());
+                AccountLog log = new AccountLog(true,amount,(int)Float.parseFloat(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now(),new Date(System.currentTimeMillis()));
                 addAccountLog(accountRef,log,savingsOrBank);
             }
         });
@@ -112,19 +117,17 @@ public class DbMain
 
     double withdraw(int attendanceNumber, String ownerOfAccount, double amount, String savingsOrBank) // 출금 함수
     {
+        data.student.setCreditScore(10);
         DocumentReference accountRef;
 
         accountRef = db.collection("Info/Account/"+savingsOrBank+"Account").document("Account_"+attendanceNumber+ownerOfAccount);
 
         accountRef.update("balance", FieldValue.increment(-amount));
 
-        accountRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>()
-        {
+        accountRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task)
-            {
-                DocumentSnapshot documentSnapshot= task.getResult();
-                AccountLog log = new AccountLog(false,amount,Double.valueOf(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now());
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                AccountLog log = new AccountLog(false,amount,(int)Float.parseFloat(documentSnapshot.get("balance").toString()),LocalDate.now(), LocalTime.now(),new Date(System.currentTimeMillis()));
                 addAccountLog(accountRef,log,savingsOrBank);
             }
         });
@@ -134,11 +137,11 @@ public class DbMain
 
     void addAccountLog(DocumentReference accountRef, AccountLog log, String savingsOrBank) // 계좌에 거래내역(Log)을 추가하는 함수
     {
+        Log.d(TAG,"Timestamp : " + log.getTimestamp().toString());
         accountRef.collection("AccountDetails").document("Log_"+log.getDateOfTransaction()+"_"+log.getTimeOfTransaction()).set(log);
     }
 
-    void checkAccount(boolean savingsOrNot){
-        Account account = new Account(data.student.getName());
+    void checkAccount(boolean savingsOrNot,TextView accNum,TextView accBal){
         if (savingsOrNot == true){
             db.collection("Info/Account/SavingsAccount").document("Account_"+data.student.getAttendanceNumber()+data.student.getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -146,10 +149,18 @@ public class DbMain
                     if (task.isSuccessful()) {
                         boolean isEmpty = task.getResult().exists();
                         if(!isEmpty){
-                            data.db.openAccount(data.student.getAttendanceNumber(),data.student.getName(),false);
+                            data.db.openAccount(data.student.getAttendanceNumber(),data.student.getName(),savingsOrNot);
+                            accNum.setText(Integer.toString(data.Saccount.getAccountNumber()));
+                            accBal.setText(Integer.toString(data.Saccount.getBalance()));
+
                         }
                         else{
-                            Log.d(Oscillator.TAG,"account is already");
+                            DocumentSnapshot documentS = task.getResult();
+                            data.Saccount = new Account(documentS.get("ownerOfAccount").toString());
+                            data.Saccount.setBalance((int)Float.parseFloat(documentS.get("balance").toString()));
+                            data.Saccount.setAccountNumber(Integer.parseInt(documentS.get("accountNumber").toString()));
+                            accNum.setText(Integer.toString(data.Saccount.getAccountNumber()));
+                            accBal.setText(Integer.toString(data.Saccount.getBalance()));
                         }
                     }
                 }
@@ -162,9 +173,16 @@ public class DbMain
                     if (task.isSuccessful()) {
                         boolean isEmpty = task.getResult().exists();
                         if (!isEmpty) {
-                            data.db.openAccount(data.student.getAttendanceNumber(), data.student.getName(), false);
+                            data.db.openAccount(data.student.getAttendanceNumber(), data.student.getName(), savingsOrNot);
+                            accNum.setText(Integer.toString(data.Baccount.getAccountNumber()));
+                            accBal.setText(Integer.toString(data.Baccount.getBalance()));
                         } else {
-                            Log.d(Oscillator.TAG, "account is already");
+                            DocumentSnapshot documentS = task.getResult();
+                            data.Baccount = new Account(documentS.get("ownerOfAccount").toString());
+                            data.Baccount.setBalance((int)Float.parseFloat(documentS.get("balance").toString()));
+                            data.Baccount.setAccountNumber(Integer.parseInt(documentS.get("accountNumber").toString()));
+                            accNum.setText(Integer.toString(data.Baccount.getAccountNumber()));
+                            accBal.setText(Integer.toString(data.Baccount.getBalance()));
                         }
                     }
                 }
@@ -172,24 +190,27 @@ public class DbMain
         }
     }
 
-    void updatebalance(){
+    void updatebalance(TextView view){
         data.student.setSalary(0);
-
-
         db.collection("Info/Account/SavingsAccount")
                 .document("Account_"+data.student.getAttendanceNumber()+data.student.getName())
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentS) {
                 if(documentS.exists()){
-                    int sal1 = Integer.parseInt(documentS.get("balance").toString());
+                    int sal1 = (int)Float.parseFloat(documentS.get("balance").toString());
                     if(data.student.getSalary()==0){
                         data.student.setSalary(sal1);
                     }
                     else{
                         data.student.setSalary(data.student.getSalary()+sal1);
                     }
-                    db.collection("User/Student/StudentList").document("Student_"+data.student.getAttendanceNumber()+data.student.getName()).update("salary",data.student.getSalary());
+                    db.collection("User/Student/StudentList").document(data.email).update("salary",data.student.getSalary());
+                    view.setText(Integer.toString(data.student.getSalary()));
+                }
+                else{
+                    data.db.openAccount(data.student.getAttendanceNumber(),data.student.getName(),true);
+                    view.setText(Integer.toString(data.student.getSalary()));
                 }
             }
         });
@@ -198,13 +219,20 @@ public class DbMain
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentS) {
-                int sal2 = Integer.parseInt(documentS.get("balance").toString());
-                if (data.student.getSalary() == 0) {
-                    data.student.setSalary(sal2);
-                } else {
-                    data.student.setSalary(data.student.getSalary() + sal2);
+                if(documentS.exists()){
+                    int sal2 = (int)Float.parseFloat(documentS.get("balance").toString());
+                    if (data.student.getSalary() == 0) {
+                        data.student.setSalary(sal2);
+                    } else {
+                        data.student.setSalary(data.student.getSalary() + sal2);
+                    }
+                    db.collection("User/Student/StudentList").document(data.email).update("salary", data.student.getSalary());
+                    view.setText(Integer.toString(data.student.getSalary()));
                 }
-                db.collection("User/Student/StudentList").document("Student_" + data.student.getAttendanceNumber() + data.student.getName()).update("salary", data.student.getSalary());
+                else{
+                    data.db.openAccount(data.student.getAttendanceNumber(),data.student.getName(),false);
+                    view.setText(Integer.toString(data.student.getSalary()));
+                }
             }
         });
     }
@@ -212,13 +240,7 @@ public class DbMain
 
     void signUp (Student student,String email) // 회원가입 함수
     {
-        //db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName()).set(student);
         db.collection("User/Student/StudentList").document(email).set(student);
-        //student.putuid(mAuth.getUid());
-
-        //DocumentReference documentReference = db.collection("User/Student/StudentList").document("Student_"+student.getAttendanceNumber()+student.getName()).set(student);
-
-        //documentReference.set(student);
 
     }
 
@@ -441,6 +463,94 @@ public class DbMain
 
     }
 
+    public void testNotice(ArrayList<ArrayList<TextView>> frame) {
+
+        db.collection("Info/Notice/NoticeList")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+                            int tmp=0;
+                            ArrayList<TextView> next;
+
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                Log.d(TAG,"testcount : " + tmp);
+                                next = frame.get(tmp);
+                                if(next.size()==0)
+                                    break;
+                                TextView change_text = next.get(0);
+                                if(change_text!=null)
+                                    change_text.setText(document.get("title").toString());
+
+                                change_text = next.get(1);
+                                if(change_text!=null)
+                                    change_text.setText(document.get("dateOfEnter").toString());
+
+                                change_text = next.get(2);
+                                if(change_text!=null)
+                                    change_text.setText(document.get("timeOfEnter").toString());
+
+                                change_text = next.get(3);
+                                if(change_text!=null)
+                                    change_text.setText(document.get("content").toString());
+
+                                tmp++;
+                            }
+
+                        }
+                    }
+                });
+
+    }
+    public void testAccountlog(ArrayList<TextView> frame) {
+        String bankcheck;
+        String checkdetail;
+        db.collection("Info/Account/BankAccount/Account_"+data.student.getAttendanceNumber()+data.student.getName()+"/AccountDetails")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        int tmp=0;
+                        TextView next;
+
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots)
+                        {
+                            Log.d(TAG,"test account here!");
+                            next = frame.get(tmp);
+                            if(tmp==3)
+                                break;
+                            String change_text;
+                            change_text=document.get("dateOfTransaction").toString()+"    ";//일자
+
+                            String amount=document.get("depositOrWithdrawal").toString();//내용
+                            boolean bool_amount = Boolean.parseBoolean(amount);
+                            if(bool_amount)
+                                change_text+="입금         ";//내용
+                            else
+                                change_text+="출금         ";//내용
+                            change_text+=document.get("amount").toString();//금액
+                            for(int i=document.get("amount").toString().length();i<18;i++)
+                                change_text+=" ";
+                            change_text+=document.get("balance").toString();//남은금액
+                            next.setText(change_text);
+                            tmp++;
+                        }
+                        for(;tmp<3;tmp++){
+                            next = frame.get(tmp);
+                            next.setText(" ");
+                        }
+                    }
+                });
+
+
+    }
+
     void addRule (Rule rule) // 규칙 추가 함수
     {
         db.collection("Info/Rule/RuleList").document(rule.getChapter()+"_"+rule.getArticle()+"_"+rule.getParagraph()).set(rule);
@@ -514,37 +624,10 @@ public class DbMain
                     }
                 });
     }
-/*
-    double getTaxRate(String taxName)
-    {
-
-        db.collection("Info/Tax/TaxList")
-                .document(taxName)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot)
-                    {
-                        Log.d("here1",documentSnapshot.get("taxRate").toString());
-
-                        taxRate = Double.valueOf(documentSnapshot.get("taxRate").toString());
-                        Log.d("here2",String.valueOf(taxRate));
-                    }
-                });
-
-
-
-
-        Log.d("here3",String.valueOf(taxRate));
-
-        return taxRate;
-    }
-
- */
 
     List<String> getNoticeList() /// 공지 List 가져오기 함수
     {
-        List<String> list = new ArrayList<>();
+        ArrayList list = new ArrayList();
 
         db.collection("Info/Notice/NoticeList")
                 .get()
@@ -578,14 +661,20 @@ public class DbMain
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         String Name,school,classNumber;
-                        int attendanceNumber;
+                        int attendanceNumber,salary,creditscore;
 
                         Name = documentSnapshot.get("name").toString();
                         school = documentSnapshot.get("school").toString();
                         classNumber = documentSnapshot.get("classNumber").toString();
                         attendanceNumber = Integer.parseInt(documentSnapshot.get("attendanceNumber").toString());
+                        salary = (int)Float.parseFloat(documentSnapshot.get("salary").toString());
+                        creditscore =  (int)Float.parseFloat(documentSnapshot.get("creditScore").toString());
+
 
                         data.student = new Student(Name, attendanceNumber, classNumber, school);
+
+                        data.student.setSalary(salary);
+                        data.student.setCreditScore(creditscore);
 
                         Intent intent = new Intent(context, MainActivity.class); //intent (move page from StartActivity to MainActivity)
                         context.dialog.cancel();
@@ -596,5 +685,43 @@ public class DbMain
                     }
                 });
     }
+    void setInvestmentrate(String name,TextView t){
+        db.collection("/Info/Investment/saving").document(name)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        float rate = Float.parseFloat(documentSnapshot.get("rate").toString());
+                        rate*=100;
+                        t.setText(Float.toString(rate));
+                    }
+                });
+    }
 
+    public void setinvestment(String name, TextView principal1, TextView principal2,TextView interestrate, TextView expectedreceipt) {
+        db.collection("/Info/Investment/saving").document(name)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        float rate = Float.parseFloat(documentSnapshot.get("rate").toString());
+                        int date = (int)((Float.parseFloat(documentSnapshot.get("month_term").toString()))*30/7);
+                        principal1.setText("기간 : " + date + "주");
+                        interestrate.setText("이자율 " + (rate*100) + "%");
+                        db.collection("Info/Account/SavingsAccount").document("Account_" + data.student.getAttendanceNumber() + data.student.getName())
+                                .get()
+                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        int bal = (int)Float.parseFloat(documentSnapshot.get("balance").toString());
+                                        int exc = (int)(bal*(1+rate));
+                                        principal2.setText("원금 : " + bal + "미소");
+                                        expectedreceipt.setText("예상수령액 : " + exc + "미소");
+
+                                    }
+                                });
+
+                    }
+                });
+    }
 }
