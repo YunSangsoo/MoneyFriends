@@ -10,24 +10,13 @@
     >
 
     <TextView
-        android:id="@+id/value_openstudentName"
+        android:id="@+id/value_openjobName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="#E86547"
-        />
-
-    <TextView
-        android:id="@+id/value_studentClass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:text="TextView"
-        android:textStyle="bold"
-        android:textSize="12dp"
-        android:textColor="#777777"
         />
 
     <View
@@ -41,31 +30,19 @@
 
 
     <TextView
-        android:id="@+id/value_openJob"
+        android:id="@+id/value_contentSalary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:padding="3dp"
-        android:text="TextView"
+        android:text="급여"
         android:textColor="#000000"
         android:textSize="20dp"
 
         />
 
     <TextView
-        android:id="@+id/value_openSalary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:padding="3dp"
-        android:text="TextView"
-        android:textColor="#000000"
-        android:textSize="20dp"
-
-        />
-
-    <TextView
-        android:id="@+id/value_openCreditScore"
+        android:id="@+id/value_openjobSalary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -77,41 +54,36 @@
         />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:padding="5dp">
 
         <Button
-            android:id="@+id/btn_changejob"
+            android:id="@+id/btn_editJob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="13dp"
             android:backgroundTint="#FFB800"
             android:fontFamily="@font/nanumbarungothic"
-            android:padding="5dp"
-            android:text="직업변경"
+            android:text="직업 수정"
             android:textColor="#ffffff"
             android:textSize="13sp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_close"
+            android:id="@+id/btn_closejob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="13dp"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:backgroundTint="#FFB800"
             android:fontFamily="@font/nanumbarungothic"
-            android:padding="5dp"
             android:text="닫기"
             android:textColor="#ffffff"
             android:textSize="13sp"
             android:textStyle="bold" />
+
+
     </LinearLayout>
 
 </LinearLayout>

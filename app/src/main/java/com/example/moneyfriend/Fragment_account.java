@@ -33,6 +33,7 @@ public class Fragment_account extends Fragment {
     public TextView Saccount_Num,Saccount_salary;
     public TextView accountlog1,accountlog2,accountlog3;
     public TextView Saccount_rate;
+    public TextView monthlypay;
 
     @Nullable
     @Override
@@ -56,14 +57,16 @@ public class Fragment_account extends Fragment {
         accountlog2 = view.findViewById(R.id.etxt_accountLog2);
         accountlog3 = view.findViewById(R.id.etxt_accountLog3);
 
+        monthlypay = view.findViewById(R.id.value_monthlyPay);
+
         Saccount_rate = view.findViewById(R.id.value_accountFrag_installmentInterestRate);
+
+        data.db.inputmonpay(monthlypay);
 
         ArrayList<TextView> frame = new ArrayList<TextView>();
         frame.add(accountlog1);
         frame.add(accountlog2);
         frame.add(accountlog3);
-
-        Log.d(TAG,"check here");
         data.db.testAccountlog(frame);
 
         data.db.setInvestmentrate("숭실적금",Saccount_rate);

@@ -47,7 +47,7 @@ public class Fragment_StudentInfo_teacher extends Fragment {
 
                 for(Student st : data.studentList ){
                     Log.d(TAG,"count now");
-                    studentInfoList.add(new StudentInfoListItem(st.getName(),st.getAttendanceNumber(),st.getSalary(),st.getClassNumber(),st.getSchool(),st.getJob(),st.getCreditScore()));
+                    studentInfoList.add(new StudentInfoListItem(st.getName(),st.getAttendanceNumber(),st.getSalary(),st.getClassNumber(),st.getSchool(),st.getJob(),st.getCreditScore(),st.getEmail()));
                 }
 
                 adapter = new StudentInfoListAdapter(view.getContext().getApplicationContext(), studentInfoList);
@@ -69,6 +69,7 @@ public class Fragment_StudentInfo_teacher extends Fragment {
                         intent.putExtra("Student_job", item.getJob());
                         intent.putExtra("Student_creditScore",item.getcreditScore());
                         intent.putExtra("Student_school",item.getschool());
+                        intent.putExtra("email",item.getEmail());
 
                         startActivity(intent);
                     }

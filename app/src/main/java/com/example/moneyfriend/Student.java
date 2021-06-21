@@ -14,6 +14,8 @@ public class Student
     private int salary;// 급여
     private int creditScore; // 신용점수
 
+    private String email = " ";
+
 
 
     //private String uid;//UID
@@ -62,6 +64,11 @@ public class Student
     }
 
     public void setJob(String job) { this.job = job; }
+
+    public void setemail(String email) { this.email = email; }
+
+    public String getEmail() { return email;
+    }
 
     //public String getUid() { return uid;}
 
