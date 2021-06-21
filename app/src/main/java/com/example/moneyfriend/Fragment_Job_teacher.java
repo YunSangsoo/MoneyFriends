@@ -2,63 +2,109 @@ package com.example.moneyfriend;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_Job_teacher#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Fragment_Job_teacher extends Fragment {
+    private View view;
+    private ListView jobListView;
+    private JobListAdapter adapter;
+    private List<JobListItem> jobList;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Button btn_addJob, btn_editJob, btn_deleteJob;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public Fragment_Job_teacher() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_Job_teacher.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Fragment_Job_teacher newInstance(String param1, String param2) {
-        Fragment_Job_teacher fragment = new Fragment_Job_teacher();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_job_teacher,container, false);
+        jobListView = (ListView) view.findViewById(R.id.jobList);
+        jobList = new ArrayList<JobListItem>();
+
+        //버튼 연결입니다.
+        btn_addJob = view.findViewById(R.id.btn_addJob); //직업 추가 버튼
+        btn_editJob = view.findViewById(R.id.btn_editJob); //직업 수정 버튼
+        btn_deleteJob = view.findViewById(R.id.btn_deleteJob); //직업 제거 버튼
+
+
+
+
+        //test용 Item 생성 부분입니다.
+        jobList.add(new JobListItem("name1", 1));
+        jobList.add(new JobListItem("nam22e1", 17778));
+        jobList.add(new JobListItem("name221", 122556));
+        jobList.add(new JobListItem("name1", 188888888));
+        jobList.add(new JobListItem("name221", 111111));
+        jobList.add(new JobListItem("na22me1", 1333));
+        jobList.add(new JobListItem("name1", 19999));
+        jobList.add(new JobListItem("na222me1", 122));
+        jobList.add(new JobListItem("name1", 1));
+        jobList.add(new JobListItem("nam22e1", 17778));
+        jobList.add(new JobListItem("name221", 122556));
+        jobList.add(new JobListItem("name1", 188888888));
+        jobList.add(new JobListItem("name221", 111111));
+        jobList.add(new JobListItem("na22me1", 1333));
+        jobList.add(new JobListItem("name1", 19999));
+        jobList.add(new JobListItem("na222me1", 122));
+        jobList.add(new JobListItem("name1", 1));
+        jobList.add(new JobListItem("nam22e1", 17778));
+        jobList.add(new JobListItem("name221", 122556));
+        jobList.add(new JobListItem("name1", 188888888));
+        jobList.add(new JobListItem("name221", 111111));
+        jobList.add(new JobListItem("na22me1", 1333));
+        jobList.add(new JobListItem("name1", 19999));
+        jobList.add(new JobListItem("na222me1", 122));
+
+
+
+
+
+
+
+        btn_addJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext().getApplicationContext(), "add Button", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn_editJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext().getApplicationContext(), "edit Button", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn_deleteJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext().getApplicationContext(), "delete Button", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+
+        adapter = new JobListAdapter(view.getContext().getApplicationContext(), jobList);
+        jobListView.setAdapter(adapter);
+
+
+        //--------list view
+
+
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment__job_teacher, container, false);
-    }
 }
