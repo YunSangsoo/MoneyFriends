@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_home_teacher"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="홈"/>
+
+    <item
+        android:id="@+id/action_StudentInfo_teacher"
+        android:enabled="true"
+        android:icon="@drawable/ic_account"
+        android:title="학생정보"/>
+    <item
+        android:id="@+id/action_Job_teacher"
+        android:enabled="true"
+        android:icon="@drawable/ic_invest"
+        android:title="직업"/>
+
+    <item
+        android:id="@+id/action_board_teacher"
+        android:enabled="true"
+        android:icon="@drawable/ic_board"
+        android:title="게시판"/>
+
+</menu>

@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView topNavigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private Fragment_home fragment_home;
-    private Fragment_account fragment_account;
-    private Fragment_investment fragment_investment;
-    private Fragment_board fragment_board;
+    private Fragment_home_teacher fragment_home_teacher;
+    private Fragment_StudentInfo_teacher fragment_studentInfo_teacher;
+    private Fragment_Job_teacher fragment_Job_teacher;
+    private Fragment_board_teacher fragment_board_teacher;
 
 
     @Override
@@ -38,16 +38,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
-                    case R.id.action_home:
+                    case R.id.action_home_teacher:
                         setFrag(0);
                         break;
-                    case R.id.action_account:
+                    case R.id.action_StudentInfo_teacher:
                         setFrag(1);
                         break;
-                    case R.id.action_investment:
+                    case R.id.action_Job_teacher:
                         setFrag(2);
                         break;
-                    case R.id.action_board:
+                    case R.id.action_board_teacher:
                         setFrag(3);
                         break;
                 }
@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fragment_home = new Fragment_home();
-        fragment_account = new Fragment_account();
-        fragment_investment = new Fragment_investment();
-        fragment_board = new Fragment_board();
+        fragment_home_teacher = new Fragment_home_teacher();
+        fragment_studentInfo_teacher = new Fragment_StudentInfo_teacher();
+        fragment_Job_teacher = new Fragment_Job_teacher();
+        fragment_board_teacher = new Fragment_board_teacher();
 
         setFrag(0);//초기 화면에 어떤 프레그먼트를 띄울지
 
@@ -86,19 +86,19 @@ public class MainActivity extends AppCompatActivity {
 
         switch (n){
             case 0:
-                ft.replace(R.id.main_frame, fragment_home);
+                ft.replace(R.id.main_frame, fragment_home_teacher);
                 ft.commit();
                 break;
             case 1:
-                ft.replace(R.id.main_frame, fragment_account);
+                ft.replace(R.id.main_frame, fragment_studentInfo_teacher);
                 ft.commit();
                 break;
             case 2:
-                ft.replace(R.id.main_frame, fragment_investment);
+                ft.replace(R.id.main_frame, fragment_Job_teacher);
                 ft.commit();
                 break;
             case 3:
-                ft.replace(R.id.main_frame, fragment_board);
+                ft.replace(R.id.main_frame, fragment_board_teacher);
                 ft.commit();
                 break;
         }
