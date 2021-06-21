@@ -61,6 +61,8 @@ public class Student
         this.creditScore = credits;
     }
 
+    public void setJob(String job) { this.job = job; }
+
     //public String getUid() { return uid;}
 
 

@@ -60,5 +60,4 @@ public class emailAuth {
         else
             return true;
     }
-
 }

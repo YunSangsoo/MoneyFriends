@@ -1,5 +1,6 @@
 package com.example.moneyfriend;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -65,11 +66,11 @@ public class DbMain
 
         //emAuth.signIn(email,password);
     }
-    public DbMain(String email,String password, int tmp){
+    public DbMain(String email,String password, boolean check_admin){
 
         Log.d(TAG,"sign start");
         emAuth = new emailAuth();
-        emAuth.signIn(email,password);
+            emAuth.signIn(email,password);
         Log.d(TAG,"sign end");
     }
 
@@ -141,6 +142,7 @@ public class DbMain
         accountRef.collection("AccountDetails").document("Log_"+log.getDateOfTransaction()+"_"+log.getTimeOfTransaction()).set(log);
     }
 
+    //학생의 입금계좌와 적금계좌를 업데이트함
     void checkAccount(boolean savingsOrNot,TextView accNum,TextView accBal){
         if (savingsOrNot == true){
             db.collection("Info/Account/SavingsAccount").document("Account_"+data.student.getAttendanceNumber()+data.student.getName()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -190,6 +192,7 @@ public class DbMain
         }
     }
 
+    //학생의 보유금액을 업데이트함
     void updatebalance(TextView view){
         data.student.setSalary(0);
         db.collection("Info/Account/SavingsAccount")
@@ -448,6 +451,14 @@ public class DbMain
         db.collection("Info/Notice/NoticeList").document(title).set(notice);
     }
 
+    void modifyNotice (String title, String content) /// 공지사항 추가 함수
+    {
+        Notice notice = new Notice(title,content, LocalDate.now(),LocalTime.now());
+        db.collection("Info/Notice/NoticeList").document(title).update("content",notice.getContent());
+        db.collection("Info/Notice/NoticeList").document(title).update("dateOfEnter",notice.getDateOfEnter());
+        db.collection("Info/Notice/NoticeList").document(title).update("timeOfEnter",notice.getTimeOfEnter());
+    }
+
     void getNotice (@NonNull GetObjectCallback<String> Callback, String title) /// 공지사항 가져오기 함수
     {
         db.collection("Info/Notice/NoticeList").document(title).get()
@@ -463,26 +474,27 @@ public class DbMain
 
     }
 
+    //공지사항 정보를 불러옴
     public void testNotice(ArrayList<ArrayList<TextView>> frame) {
 
         db.collection("Info/Notice/NoticeList")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                {
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
-                    {
-                        if (task.isSuccessful())
-                        {
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             int tmp=0;
                             ArrayList<TextView> next;
 
-                            for (QueryDocumentSnapshot document : task.getResult())
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots)
                             {
-                                Log.d(TAG,"testcount : " + tmp);
+                                Notice input = new Notice(document.get("title").toString(),document.get("content").toString(),LocalDate.parse(document.get("dateOfEnter").toString()),LocalTime.parse(document.get("timeOfEnter").toString()));
+                                data.NoticeList.add(input);
+
+                                if(tmp>=frame.size())
+                                    continue;
                                 next = frame.get(tmp);
                                 if(next.size()==0)
-                                    break;
+                                    continue;
                                 TextView change_text = next.get(0);
                                 if(change_text!=null)
                                     change_text.setText(document.get("title").toString());
@@ -501,12 +513,11 @@ public class DbMain
 
                                 tmp++;
                             }
-
                         }
-                    }
                 });
 
     }
+    //입금 계좌의 거래기록을 불러옴
     public void testAccountlog(ArrayList<TextView> frame) {
         String bankcheck;
         String checkdetail;
@@ -654,6 +665,7 @@ public class DbMain
 
         return list;
     }
+    //학생이 로그인 시, 로그인한 학생의 정보를 DB에서 가져옴
     void loadUserInform(String email,LoginActivity context){
         db.collection("User/Student/StudentList").document(email)
                 .get()
@@ -685,6 +697,7 @@ public class DbMain
                     }
                 });
     }
+    //메인화면의 적금 정보를 설정하는 함수
     void setInvestmentrate(String name,TextView t){
         db.collection("/Info/Investment/saving").document(name)
                 .get()
@@ -698,6 +711,7 @@ public class DbMain
                 });
     }
 
+    //적금 정보 가져오는 함수
     public void setinvestment(String name, TextView principal1, TextView principal2,TextView interestrate, TextView expectedreceipt) {
         db.collection("/Info/Investment/saving").document(name)
                 .get()
@@ -723,5 +737,56 @@ public class DbMain
 
                     }
                 });
+    }
+
+    //선생님(관리자)으로 로그인 시 개인정보를 가져옴.
+    public void loadAdminInform(String email, String i_password, LoginActivity loginActivity) {
+
+        db.collection("User/Teacher/TeacherList").document(email)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String pwd = documentSnapshot.get("password").toString();
+                        if(i_password.compareTo(pwd)!=0)
+                            return;
+
+                        String Name,school,classNumber;
+
+                        Name = documentSnapshot.get("name").toString();
+                        school = documentSnapshot.get("school").toString();
+                        classNumber = documentSnapshot.get("classNumber").toString();
+
+                        data.admin = new Teacher(Name, classNumber, school);
+
+                        Intent intent = new Intent(loginActivity, MainActivity.class); //intent (move page from StartActivity to MainActivity)
+                        loginActivity.dialog.cancel();
+                        loginActivity.startActivity(intent);//activity 이동 구문
+                        loginActivity.overridePendingTransition(0, 0); // 화면전환 시 애니메이션 제거를 위한 구문입니다.
+                        loginActivity.finish();
+
+                    }
+                });
+    }
+    public void getStudentList() {
+        data.studentList = new ArrayList<Student>();
+        db.collection("User/Student/StudentList")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots)
+                        {
+                            Student input = new Student(document.get("name").toString(),Integer.parseInt(document.get("attendanceNumber").toString()),document.get("classNumber").toString(),document.get("school").toString());
+
+                            input.setSalary((int)Float.parseFloat(document.get("salary").toString()));
+                            input.setCreditScore((int)Float.parseFloat(document.get("creditScore").toString()));
+                            input.setJob(document.get("job").toString());
+                            data.studentList.add(input);
+                        }
+                    }
+                });
+
     }
 }

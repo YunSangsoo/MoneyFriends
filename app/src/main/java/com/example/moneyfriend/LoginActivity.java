@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +28,12 @@ public class LoginActivity extends AppCompatActivity {
     AlertDialog.Builder builder;
     AlertDialog dialog;
 
+    boolean check_admin;
+    CheckBox chk;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
         //edit
@@ -45,12 +48,14 @@ public class LoginActivity extends AppCompatActivity {
         email = (EditText)findViewById(R.id.etxt_ID);
         password = (EditText)findViewById(R.id.etxt_PWD);
 
+        chk = findViewById(R.id.chkBox1);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 i_email = email.getText().toString();
                 i_password = password.getText().toString();
+                check_admin = chk.isChecked();
 
                 asyncT asynct = new asyncT();
                 asynct.execute();
@@ -102,13 +107,21 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(Void... params){
             data.email = i_email;
             Log.d(TAG,"login information : "+i_email+" "+i_password);
-            data.db = new DbMain(i_email,i_password,1);
+            data.db = new DbMain(i_email,i_password,check_admin);
 
-            data.db.loadUserInform(data.email,LoginActivity.this);
+            if(!check_admin){
+                data.isadmin=false;
+                data.db.loadUserInform(data.email,LoginActivity.this);
+            }
+            else{
+                data.isadmin=true;
+                data.db.loadAdminInform(data.email,i_password,LoginActivity.this);
+            }
             return null;
         }
         @Override
         protected void onPostExecute(String result){
+            dialog.cancel();
             super.onPostExecute(result);
             //dialog.cancel();
         }

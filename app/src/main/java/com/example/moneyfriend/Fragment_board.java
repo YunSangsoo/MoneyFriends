@@ -30,29 +30,25 @@ public class Fragment_board extends Fragment {
     private NoticeListAdapter adapter;
     private List<ListItem> noticeList;
 
-    DbMain db = data.db;
-
-    Object objectCallback;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable  Bundle savedInstanceState) {
 
 
-        data.NoticeTitleList = db.getNoticeList();
-        List<String> titleList = data.NoticeTitleList;
 
         view = inflater.inflate(R.layout.fragment_board,container, false);
         noticeListView = (ListView) view.findViewById(R.id.board_main);
         noticeList = new ArrayList<ListItem>();
 
 
-        for(int i = 0; i < titleList.size(); i++){
+        for(int i = 0; i < data.NoticeList.size(); i++){
 
-            String noticeTitle = titleList.get(i);
+            Notice n = data.NoticeList.get(i);
+            String noticeTitle = n.getTitle();
+            String noticedate = n.getDateOfEnter() + " " + n.getTimeOfEnter();
 
 
-            noticeList.add(new ListItem(noticeTitle, "실시간 연결에 문제가 있음"));
+            noticeList.add(new ListItem(noticeTitle, noticedate,n.getContent()));
         }
 
         adapter = new NoticeListAdapter(view.getContext().getApplicationContext(), noticeList);
@@ -68,19 +64,10 @@ public class Fragment_board extends Fragment {
 
                 Intent intent = new Intent(getActivity(),OpenNotice.class);
 
-                db.getNotice(new GetObjectCallback<String>() {
-                    @Override
-                    public void callback(String object)
-                    {
-                        objectCallback=object;
-                    }
-                },item.getTitle());
-
-                String Notice_Content = String.valueOf(objectCallback);
-
 
                 intent.putExtra("Notice_title", item.getTitle());
-                intent.putExtra("Notice_content", Notice_Content);
+                intent.putExtra("Notice_content", item.getContent());
+                intent.putExtra("Notice_date",item.getDate());
 
                 //Toast.makeText(getContext(), "선택 : "+ item.getTitle(), Toast.LENGTH_SHORT).show();
 

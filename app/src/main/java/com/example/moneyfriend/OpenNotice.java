@@ -21,6 +21,7 @@ public class OpenNotice extends AppCompatActivity {
 
         Intent secondIntent = getIntent();
         String Notice_Title = secondIntent.getStringExtra("Notice_title");
+        String Notice_Date = secondIntent.getStringExtra("Notice_date");
         String Notice_Content = secondIntent.getStringExtra("Notice_content");
 
         noticeTitle = findViewById(R.id.value_OpenNoticeTitle);
@@ -28,7 +29,7 @@ public class OpenNotice extends AppCompatActivity {
         //게시글 열람시 보이는 창의 Title을 바꾸는 코드
 
         noticeDate = findViewById(R.id.value_OpenNoticeDate);
-        noticeDate.setText(Notice_Title);
+        noticeDate.setText(Notice_Date);
         //게시글 열람시 보이는 창의 Date를 바꾸는 코드
 
         NoticeContent = findViewById(R.id.value_OpenNoticeContent);

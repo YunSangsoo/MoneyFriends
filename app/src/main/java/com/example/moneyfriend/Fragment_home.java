@@ -1,19 +1,16 @@
 package com.example.moneyfriend;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Fragment_home extends Fragment {
     DbMain db = data.db;
@@ -31,7 +28,7 @@ public class Fragment_home extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable  Bundle savedInstanceState) {
 
-        data.NoticeTitleList = db.getNoticeList();
+        //data.NoticeTitleList = db.getNoticeList();
 
         view = inflater.inflate(R.layout.fragment_home,container, false);
 
@@ -52,11 +49,11 @@ public class Fragment_home extends Fragment {
 
         NoticeTitle_1 = view.findViewById(R.id.value_notice1Title);
         NoticeTitle_2 = view.findViewById(R.id.value_notice2Title);
-        NoticeTitle_3 = view.findViewById(R.id.value_notice3Title);
+        NoticeTitle_3 = view.findViewById(R.id.value_notice4Title);
 
         NoticeDate_1 = view.findViewById(R.id.value_notice1Date);
         NoticeDate_2 = view.findViewById(R.id.value_notice2Date);
-        NoticeDate_3 = view.findViewById(R.id.value_notice3Date);
+        NoticeDate_3 = view.findViewById(R.id.value_notice4Date);
 
         stock_name = view.findViewById(R.id.text_stockName);
         stock_price = view.findViewById(R.id.value_stockPrice);
@@ -65,6 +62,8 @@ public class Fragment_home extends Fragment {
         data.db.setInvestmentrate("숭실적금",stock_price);
 
 
+
+        data.NoticeList = new ArrayList<>();
 
         ArrayList<ArrayList<TextView>> frame = new ArrayList<ArrayList<TextView>>();
         ArrayList<TextView> data1 = new ArrayList<TextView>();
