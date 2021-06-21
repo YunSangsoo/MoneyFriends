@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp">
+
+    <!--
+    이 fragment는 home에 해당하는 fragment입니다.
+
+    - 해야 할 일
+    1. 갱신되어야 하는 정보 연결하기
+    2. 게시판 부분 어떻게 구현 할 지 고민 해보기
+    -->
+
+    <!-- 학생 id카드 부분입니다.-->
+
+    <ImageView
+        android:id="@+id/card_background"
+        android:layout_width="369dp"
+        android:layout_height="192dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/card" />
+
+    <TextView
+        android:id="@+id/idcard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="국 민 등 록 증"
+        android:textColor="#000000"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/card_background"
+        app:layout_constraintEnd_toEndOf="@+id/card_background"
+        app:layout_constraintHorizontal_bias="0.305"
+        app:layout_constraintStart_toStartOf="@+id/card_background"
+        app:layout_constraintTop_toTopOf="@+id/card_background"
+        app:layout_constraintVertical_bias="0.179" />
+
+    <ImageView
+        android:id="@+id/symbol_money"
+        android:layout_width="32dp"
+        android:layout_height="19dp"
+        app:layout_constraintEnd_toStartOf="@+id/idcard"
+        app:layout_constraintHorizontal_bias="0.692"
+        app:layout_constraintStart_toStartOf="@+id/card_background"
+        app:layout_constraintTop_toTopOf="@+id/idcard"
+        app:srcCompat="@drawable/symbol_money" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="이름:"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/symbol_money"
+        app:layout_constraintTop_toBottomOf="@+id/symbol_money" />
+
+
+    <!--- 학생정보 관련 XML part: 이 이후 부분은 동적으로 정보, 자료를 받아와서 유저에 따라 맞게 갱신되도록 고쳐야합니다.-->
+
+
+    <TextView
+        android:id="@+id/job"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="직업:"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/value_userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="temp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintTop_toTopOf="@+id/name" />
+    <!--이 부분은 나중에 사용자의 이름을 받아와서 설정하는 방식으로 바꿔야 합니다.-->
+
+
+    <TextView
+        android:id="@+id/value_userJob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="temp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/job"
+        app:layout_constraintTop_toTopOf="@+id/job" />
+    <!--이 부분은 나중에 사용자의 직업을 받아와서 설정하는 방식으로 바꿔야 합니다.-->
+
+
+    <TextView
+        android:id="@+id/value_userInfomation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="세원초등학교 3학년 1반 20번(temp)"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintTop_toTopOf="@+id/name" />
+    <!--이 부분은 나중에 사용자의 인적사항을 받아와서 설정하는 방식으로 바꿔야 할 것 같습니다.-->
+
+    <!--이 부분은 나중에 사용자의 사진을 받아와서 설정하는 방식으로 바꿔야 할 것 같습니다.-->
+
+
+    <!-- 세금, 주가 관련 부분입니다.-->
+
+    <ImageView
+        android:id="@+id/profile_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/card_background"
+        app:layout_constraintEnd_toEndOf="@+id/card_background"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toStartOf="@+id/card_background"
+        app:layout_constraintTop_toTopOf="@+id/card_background"
+        app:layout_constraintVertical_bias="0.537"
+        app:srcCompat="@drawable/profile_photo" />
+
+    <!-- 이 부분 이후도 국가 정보를 받아와서 동적으로 정보를 갱신해줘야합니다. -->
+
+    <TextView
+        android:id="@+id/text_tax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="우리반 세금"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/card_background"
+        app:layout_constraintTop_toBottomOf="@+id/card_background" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D6D6D6"
+
+        app:layout_constraintBottom_toTopOf="@+id/text_stock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_tax" />
+
+    <TextView
+        android:id="@+id/value_tax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/text_text"
+        app:layout_constraintTop_toTopOf="@+id/text_tax" />
+    <!-- 세금 정보 갱신 할 수 있도록 수정 해야합니다. -->
+
+    <TextView
+        android:id="@+id/text_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="216dp"
+        android:layout_marginLeft="216dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="미소"
+        android:textColor="#000000"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/text_tax"
+        app:layout_constraintTop_toTopOf="@+id/text_tax" />
+
+    <TextView
+        android:id="@+id/value_stockPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/text_text"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/value_tax"
+        app:layout_constraintTop_toTopOf="@+id/text_stockName" />
+
+    <TextView
+        android:id="@+id/text_stockName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="OO주식회사"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/card_background"
+        app:layout_constraintTop_toBottomOf="@+id/text_stock" />
+
+    <TextView
+        android:id="@+id/text_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="오늘의 주가"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/text_tax"
+        app:layout_constraintTop_toBottomOf="@+id/text_tax" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#D6D6D6"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_stockName" />
+
+    <!-- 주가 정보 갱신 할 수 있도록 수정 해야합니다. -->
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="알립니다"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/text_tax"
+        app:layout_constraintTop_toBottomOf="@+id/text_tax" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+
+        <TextView
+            android:id="@+id/value_notice1Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:text="공지사항"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/value_notice1Date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="22dp"
+            android:padding="3dp"
+            android:text="날짜"
+            android:textColor="#000000"
+            android:textColorHint="#000000" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/value_notice2Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:text="공지사항"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/value_notice2Date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="22dp"
+            android:padding="3dp"
+            android:text="날짜"
+            android:textColor="#000000"
+            android:textColorHint="#000000" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/value_notice3Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:text="공지사항"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/value_notice3Date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="22dp"
+            android:padding="3dp"
+            android:text="날짜"
+            android:textColor="#000000"
+            android:textColorHint="#000000" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
