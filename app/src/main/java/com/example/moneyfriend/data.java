@@ -18,8 +18,13 @@ public class data {
     static String email;
 
 
-    static List<String> NoticeTitleList;
+    static List<Notice> NoticeList;
+
+    static List<Student> studentList;
 
     static Account Saccount,Baccount;
+
+    static boolean isadmin;
+    static Teacher admin;
 
 }

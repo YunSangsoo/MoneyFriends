@@ -352,7 +352,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
-            android:id="@+id/value_notice3Title"
+            android:id="@+id/value_notice4Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -365,7 +365,7 @@
 
 
         <TextView
-            android:id="@+id/value_notice3Date"
+            android:id="@+id/value_notice4Date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="22dp"

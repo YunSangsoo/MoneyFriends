@@ -6,17 +6,21 @@ public class ListItem {
  String title;
  String writer;
  String date;
+ String content;
 
 
-    public ListItem(String title, /*String writer,*/ String date) {
+    public ListItem(String title, /*String writer,*/ String date, String content) {
         this.title = title;
         //this.writer = writer;
         this.date = date;
+        this.content = content;
     }
 
     public String getTitle() {
         return title;
     }
+
+    public String getContent() { return content; }
 
     public void setTitle(String title) {
         this.title = title;
