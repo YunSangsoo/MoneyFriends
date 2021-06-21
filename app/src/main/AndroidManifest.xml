@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyFriend">
-        <activity android:name=".OpenNotice"></activity>
+        <activity android:name=".investment_noAccount"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".OpenNotice" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".StartActivity">

@@ -2,7 +2,10 @@ package com.example.moneyfriend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +15,12 @@ import android.widget.Toast;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    DbMain db = new DbMain();
-
     EditText school, // 학교
             studentName, // 학생 이름
             atndNumber, // 출석 번호
-            classNumber; // 반
+            classNumber, // 반
+            email, //이메일
+            password; // 비밀번호
 
     Button btn_confirm; //확인 버튼
 
@@ -33,6 +36,9 @@ public class SignUpActivity extends AppCompatActivity {
         studentName = findViewById(R.id.etxt_signUpName);
         classNumber = findViewById(R.id.etxt_signUpclassNumber);
         atndNumber = findViewById(R.id.etxt_signUpAttendanceNumber);
+
+        email = findViewById(R.id.etxt_email);
+        password = findViewById(R.id.etxt_PWD);
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
                                            @Override
@@ -59,17 +65,22 @@ public class SignUpActivity extends AppCompatActivity {
                    }
                    else*/
 
+
                                                if (school.getText().toString().length() != 0
                                                        && studentName.getText().toString().length() != 0
                                                        && classNumber.getText().toString().length() != 0
                                                        && atndNumber.getText().toString().length() != 0) {
+                                                   /*
 
                                                    Student student = new Student(studentName.getText().toString(),
                                                            Integer.parseInt(atndNumber.getText().toString()),
                                                            Integer.parseInt(classNumber.getText().toString()),
                                                            school.getText().toString());
 
-                                                   db.signUp(student);
+                                                   db.signUp(student);*/
+
+                                                   SignUpActivity.asyncT asynct = new SignUpActivity.asyncT();
+                                                   asynct.execute();
 
                                                    Intent intent2 = new Intent(SignUpActivity.this, LoginActivity.class);
 
@@ -82,6 +93,58 @@ public class SignUpActivity extends AppCompatActivity {
                                            }
                                        }
         );
+
+    }
+
+
+
+
+    public class asyncT extends AsyncTask<Void,Void,String> {
+
+        AlertDialog.Builder builder;
+        AlertDialog dialog;
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            builder = new AlertDialog.Builder(SignUpActivity.this);
+            builder.setTitle("wait"); builder.setMessage("Loading");
+            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.setCancelable(false);
+            dialog = builder.create();
+            dialog.show();
+
+        }
+        @Override
+        protected String doInBackground(Void... params){
+            data.email = email.getText().toString();
+            data.db = new DbMain(data.email,password.getText().toString());
+
+            data.student = new Student(studentName.getText().toString(),
+                    Integer.parseInt(atndNumber.getText().toString()),
+                    classNumber.getText().toString(),
+                    school.getText().toString());
+
+            data.db.signinauth(data.email,password.getText().toString());
+
+            data.db.signUp(data.student,data.email);
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String result){
+
+            data.editor.putString("name",data.student.getName());
+            data.editor.putInt("attendanceNumber",data.student.getAttendanceNumber());
+            data.editor.apply();
+            super.onPostExecute(result);
+            dialog.cancel();
+        }
+
 
     }
 }

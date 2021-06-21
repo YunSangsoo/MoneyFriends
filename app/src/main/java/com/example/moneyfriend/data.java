@@ -12,4 +12,6 @@ public class data {
     static SharedPreferences preferences;
     static SharedPreferences.Editor editor;
 
+    static String email;
+
 }

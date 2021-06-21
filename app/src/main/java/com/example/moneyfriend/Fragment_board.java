@@ -29,7 +29,7 @@ public class Fragment_board extends Fragment {
     private NoticeListAdapter adapter;
     private List<ListItem> noticeList;
 
-    DbMain db = new DbMain();
+    DbMain db = data.db;
     List<String> titleList = db.getNoticeList();
 
     Object objectCallback;

@@ -46,13 +46,19 @@ public class emailAuth {
         Log.d(TAG, "signIn:" + email);
         mAuth.signInWithEmailAndPassword(email, password);
         curUser = mAuth.getCurrentUser();
-        //Log.d(TAG, "my uid:" + curUser.getUid());
     }
     public void sendEmailVerification() {
 
         // Send verification email
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification();
+    }
+
+    public boolean isSignin(){
+        if(curUser==null)
+            return false;
+        else
+            return true;
     }
 
 }

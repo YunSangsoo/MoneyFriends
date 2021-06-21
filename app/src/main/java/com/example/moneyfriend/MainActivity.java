@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
 
 
+        //MainActivity.asyncT asynct = new MainActivity.asyncT();
+        //asynct.execute();
         TextView title = findViewById(R.id.value_mainTitle);
         title.setText(data.student.getSchool()+" "+data.student.getClassNumber()+"반 ");
 
@@ -125,20 +127,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... params){
 
-            if(data.isSignup==1){
-                String name = data.preferences.getString("name","이름없음");
-                int attendanceNumber = data.preferences.getInt("attendanceNumber",-1);
-                //data.db.loadUserInform(name,attendanceNumber);
-            }
 
+            TextView title = findViewById(R.id.value_mainTitle);
+            title.setText(data.student.getSchool()+" "+data.student.getClassNumber()+"반 ");
             return null;
         }
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
-
-            TextView title = findViewById(R.id.value_mainTitle);
-            title.setText(data.student.getSchool()+" "+data.student.getClassNumber()+"반 ");
             dialog.cancel();
         }
 
