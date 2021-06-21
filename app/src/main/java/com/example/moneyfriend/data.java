@@ -8,6 +8,7 @@ import java.util.List;
 
 public class data {
 
+    static ArrayList<Job> jobList;
     static int isSignup;
     static Student student;
     static DbMain db;

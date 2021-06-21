@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
             setFrag(0);
         }
         else {
+            data.jobList = new ArrayList<Job>();
+            data.db.joblist();
+
             topNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {

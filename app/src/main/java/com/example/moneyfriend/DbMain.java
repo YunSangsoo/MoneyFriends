@@ -243,8 +243,8 @@ public class DbMain
 
     void signUp (Student student,String email) // 회원가입 함수
     {
+        student.setemail(email);
         db.collection("User/Student/StudentList").document(email).set(student);
-
     }
 
     //void calculateCreditScore () // 신용점수 계산 함수
@@ -401,9 +401,9 @@ public class DbMain
         db.collection("Info/Job/JobList").document(job.getName()).set(job);
     }
 
-    void editJob (Job job) /// 직업 수정 함수
+    void editJob (String beforeName,Job job) /// 직업 수정 함수
     {
-        deleteJob(job.getName());
+        deleteJob(beforeName);
         addJob(job);
     }
 
@@ -672,7 +672,7 @@ public class DbMain
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String Name,school,classNumber;
+                        String Name,school,classNumber,job;
                         int attendanceNumber,salary,creditscore;
 
                         Name = documentSnapshot.get("name").toString();
@@ -682,11 +682,14 @@ public class DbMain
                         salary = (int)Float.parseFloat(documentSnapshot.get("salary").toString());
                         creditscore =  (int)Float.parseFloat(documentSnapshot.get("creditScore").toString());
 
+                        job = documentSnapshot.get("job").toString();
+
 
                         data.student = new Student(Name, attendanceNumber, classNumber, school);
 
                         data.student.setSalary(salary);
                         data.student.setCreditScore(creditscore);
+                        data.student.setJob(job);
 
                         Intent intent = new Intent(context, MainActivity.class); //intent (move page from StartActivity to MainActivity)
                         context.dialog.cancel();
@@ -779,6 +782,7 @@ public class DbMain
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots)
                         {
                             Student input = new Student(document.get("name").toString(),Integer.parseInt(document.get("attendanceNumber").toString()),document.get("classNumber").toString(),document.get("school").toString());
+                            input.setemail(document.get("email").toString());
 
                             input.setSalary((int)Float.parseFloat(document.get("salary").toString()));
                             input.setCreditScore((int)Float.parseFloat(document.get("creditScore").toString()));
@@ -788,5 +792,36 @@ public class DbMain
                     }
                 });
 
+    }
+    public void joblist(){
+        db.collection("Info/Job/JobList")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots)
+                        {
+                            Job input = new Job(document.get("name").toString(),Integer.parseInt(document.get("salary").toString()),Integer.parseInt(document.get("minimumCreditScore").toString()));
+                            data.jobList.add(input);
+                        }
+                    }
+                });
+
+    }
+    public void changejob(String jobname, String email){
+        Log.d(TAG,"choose email : " + email);
+        db.collection("User/Student/StudentList").document(email).update("job",jobname);
+    }
+
+    public void inputmonpay(TextView monthlypay) {
+        db.collection("Info/Job/JobList").document(data.student.getJob())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        monthlypay.setText(documentSnapshot.get("salary").toString()+"미소");
+                    }
+                });
     }
 }
