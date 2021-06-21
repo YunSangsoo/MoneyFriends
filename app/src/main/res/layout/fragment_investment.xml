@@ -53,20 +53,18 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/value_remainDew"
+                android:id="@+id/value_principal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="9dp"
                 android:fontFamily="@font/nanumbarungothic"
-                android:gravity="center_horizontal"
-                android:text="만기일이 11일 남았습니다."
+                android:text="기간: 14주"
                 android:textColor="#000000"
-                android:textSize="15sp"
-
-                />
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/value_principal"
+                android:id="@+id/value_principal2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"

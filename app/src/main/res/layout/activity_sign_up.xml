@@ -264,7 +264,7 @@
 
         android:layout_marginTop="35dp"
         android:backgroundTint="#FFB800"
-        android:text="학 인"
+        android:text="확 인"
         android:textStyle="bold"
 
 
