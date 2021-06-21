@@ -54,6 +54,7 @@
             android:background="#f4f4f4"
             android:fontFamily="@font/nanumbarungothic"
             android:hint="ID를 입력해주세요.                                  "
+            android:text="a@a"
             android:textColor="#777777"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -92,6 +93,7 @@
             android:background="#f4f4f4"
             android:fontFamily="@font/nanumbarungothic"
             android:hint="PASSWORD를 입력해주세요.              "
+            android:text="zzz"
             android:textColor="#777777"
             android:textSize="20sp"
             android:textStyle="bold" />
